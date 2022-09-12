@@ -1,8 +1,12 @@
+import 'package:boatrack_management/pages/bookings.dart';
 import 'package:boatrack_management/pages/dashboard.dart';
-import 'package:boatrack_management/resources/box_decorations.dart';
-import 'package:boatrack_management/resources/text_styles.dart';
+import 'package:boatrack_management/pages/settings.dart';
+import 'package:boatrack_management/pages/yacht.dart';
+import 'package:boatrack_management/pages/yachts.dart';
+import 'package:boatrack_management/resources/styles/box_decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import '../models/yacht.dart';
 import '../resources/colors.dart';
 import '../widgets/user_interface/side_menu_title_widget.dart';
 
@@ -16,8 +20,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   late List<SideMenuItem> sideMenuItems;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
+
+  Yacht selectedYacht = Yacht();
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +35,15 @@ class _MainPageState extends State<MainPage> {
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          //SIDE MENU (LEFT SIDE)
+          ///SIDE MENU (LEFT SIDE)
           SideMenu(
             controller: _pageController,
             title: const SideMenuTitleWidget(),
             style: SideMenuStyle(
               displayMode: SideMenuDisplayMode.auto,
               decoration: BoxDecoration(
-                boxShadow: [
-                  CustomBoxDecorations.containerBoxShadow(),
+                  boxShadow: [
+                    CustomBoxDecorations.containerBoxShadow(),
                   ]
               ),
               openSideMenuWidth: 300,
@@ -50,26 +57,22 @@ class _MainPageState extends State<MainPage> {
               unselectedTitleTextStyle: TextStyle(color: CustomColors().navigationTextColor),
               iconSize: 20,
             ),
-            onDisplayModeChanged: (mode) {
-              print(mode);
-            },
             // List of SideMenuItem to show them on SideMenu
             items: sideMenuItems,
           ),
 
-          //RIGHT SIDE
+          ///RIGHT SIDE PAGES
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 125, 15, 0),
+              padding: const EdgeInsets.fromLTRB(15, 35, 15, 0),
               child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _pageController,
                 children: [
-                  const DashboardPage(),
-                  Container(
-                    child: const Center(
-                      child: Text('Settings'),
-                    ),
-                  ),
+                  DashboardPage(notifyParent: openYachtPage,),
+                  YachtsPage(notifyParent: openYachtPage, yacht: selectedYacht, notifyParentGoPageBack: pageBack,),
+                  BookingsPage(),
+                  const SettingsPage()
                 ],
               ),
             ),
@@ -90,16 +93,45 @@ class _MainPageState extends State<MainPage> {
       ),
       SideMenuItem(
         priority: 1,
-        title: 'Settings',
+        title: 'Boats',
         onTap: () => _pageController.jumpToPage(1),
-        icon: const Icon(Icons.settings),
+        icon: const Icon(Icons.directions_boat_outlined),
       ),
       SideMenuItem(
         priority: 2,
-        title: 'Exit',
+        title: 'Bookings',
+        onTap: () => _pageController.jumpToPage(2),
+        icon: const Icon(Icons.calendar_today_outlined),
+      ),
+      SideMenuItem(
+        priority: 3,
+        title: 'Settings',
+        onTap: () => _pageController.jumpToPage(3),
+        icon: const Icon(Icons.settings),
+      ),
+      SideMenuItem(
+        priority: 4,
+        title: 'Log Out',
         onTap: () {},
         icon: const Icon(Icons.exit_to_app),
       ),
     ];
+  }
+
+  void openYachtPage(Yacht y){
+    setState(() {
+      selectedYacht = y;
+      _pageController.jumpToPage(1);
+    });
+  }
+  
+  void pageBack(String page){
+    print("hi");
+    if(page == "yachts"){
+      setState(() {
+        selectedYacht = Yacht();
+        _pageController.jumpToPage(1);
+      });
+    }
   }
 }

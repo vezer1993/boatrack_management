@@ -1,5 +1,5 @@
 import 'package:boatrack_management/resources/colors.dart';
-import 'package:boatrack_management/resources/text_styles.dart';
+import 'package:boatrack_management/resources/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuTitleWidget extends StatefulWidget {

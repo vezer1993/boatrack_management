@@ -36,6 +36,10 @@ class CalendarCalculations {
     return weekNumber(DateTime.now());
   }
 
+  int getWeekNumberForDate(DateTime date){
+    return weekNumber(date);
+  }
+
   /// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
   int numOfWeeks(int year) {
     DateTime dec28 = DateTime(year, 12, 28);
@@ -51,6 +55,11 @@ class CalendarCalculations {
       woy = numOfWeeks(date.year - 1);
     } else if (woy > numOfWeeks(date.year)) {
       woy = 1;
+    }
+    woy;
+
+    if(date.weekday == 6 || date.weekday == 7){
+      woy++;
     }
     return woy;
   }
