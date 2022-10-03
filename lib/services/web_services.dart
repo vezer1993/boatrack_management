@@ -62,10 +62,13 @@ Future putResponse(BuildContext context, String path, Map<String, dynamic> param
 }
 
 Future putResponseNoParam(BuildContext context, String path, var body) async {
+  print("HELLO");
   var client = http.Client();
   path = StaticStrings.getApiVersion() + path;
+  print(path);
   var url = Uri.https(StaticStrings.getApiURL().toString(), path.toString());
   var response = await client.put(url, headers: createHeaders(), body: jsonEncode(body));
+  print("HI");
 
   interceptResponse(response, context);
 

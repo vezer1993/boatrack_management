@@ -8,6 +8,10 @@ class IssuesNavigation {
   int? checkoutId;
   bool? hasPictures;
   int? cleaningId;
+  String? timestamp;
+  String? resolutionNote;
+  bool? resolved;
+  String? document;
   String? checkin;
   String? checkout;
   String? cleaning;
@@ -30,8 +34,12 @@ class IssuesNavigation {
     id = json['id'];
     name = json['name'];
     description = json['description'];
-    checkinId = json['checkinId'];
+    resolutionNote = json['resolutionNote'];
+    timestamp = json['timeStamp'];
+    document = json['document'];
+    resolved = json['resolved'];
     checkoutId = json['checkoutId'];
+    checkinId = json['checkinId'];
     hasPictures = json['hasPictures'];
     cleaningId = json['cleaningId'];
     checkin = json['checkin'];

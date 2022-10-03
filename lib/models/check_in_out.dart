@@ -8,6 +8,7 @@ class CheckInOut {
   String? signature;
   bool? issues;
   String? document;
+  String? timestamp;
   List<String>? bookings;
   List<IssuesNavigation>? issuesNavigation;
 
@@ -30,6 +31,7 @@ class CheckInOut {
     signature = json['signature'];
     issues = json['issues'];
     document = json['document'];
+    timestamp = json['timestampData'];
     bookings = json['bookings'].cast<String>();
     if (json['issuesNavigation'] != null) {
       issuesNavigation = <IssuesNavigation>[];

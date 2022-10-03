@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 class CalendarCalculations {
 
   //calculating weeks from saturday to saturday
-  List<String> calculateBookingWeeks(){
+  List<String> calculateBookingWeeks(int year){
 
     //Define used variables
     List<String> weeks = [];
     DateFormat df = Formats.getDateOnlyFormat();
 
     //get the first day of the year
-    DateTime date = DateTime(DateTime.now().year, 1, 1);
+    DateTime date = DateTime(year, 1, 1);
     date = getNextSaturdayForDate(date);
 
     int currentYear = date.year;

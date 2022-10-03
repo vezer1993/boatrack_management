@@ -81,7 +81,7 @@ class StaticStrings{
   //local: localhost:5001
   //azure: boatrackservices.azurewebsites.net
   static String getApiURL (){
-    return "localhost:5001";
+    return "boatrackservices.azurewebsites.net";
   }
 
   static String getTeltonikaApiURL (){
@@ -121,6 +121,31 @@ class StaticStrings{
   static String getPathCharterTeltonikaParam(){
     return "teltonikaToken";
   }
+
+  static String getPathYachtCheckModel(){
+    return "/checkmodel";
+  }
+
+  static String getPathParamYachtCheckModel(){
+    return "checkmodel";
+  }
+
+  static String getPathCheckInList(){
+    return"/Checkins/list";
+  }
+
+  static String getPathCheckOutList(){
+    return"/Checkouts/list";
+  }
+
+  static String getPathIssues(){
+    return"/Issues/list";
+  }
+
+  static String getPathCleaningList(){
+    return"/Cleanings/list";
+  }
+
 
   /// ACCOUNT PATHS
   static String getPathAccount(){

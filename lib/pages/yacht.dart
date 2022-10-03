@@ -8,6 +8,7 @@ import '../resources/separators.dart';
 import '../widgets/containers/full_width_container.dart';
 import '../widgets/user_interface/header.dart';
 import '../widgets/yachts/yacht_information_widget.dart';
+import '../widgets/yachts/yacht_model_select_widget.dart';
 
 class YachtPage extends StatefulWidget {
   final Yacht yacht;
@@ -35,7 +36,7 @@ class _YachtPageState extends State<YachtPage> {
               childWidget: YachtPresentationWidget(yacht: widget.yacht),
             ),
             Separators.dashboardVerticalSeparator(),
-            MultiWidgetContainer(topLeftWidget: Text("hi2"), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 400), rightWidget: Text("hi3"), topRightWidget: Text("hi4"), containerHeight: 400,)
+            MultiWidgetContainer(topLeftWidget: Text("hi2"), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 400), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: Text("hi4"), containerHeight: 400,)
           ],
         ),
       ),

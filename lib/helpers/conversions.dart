@@ -14,6 +14,22 @@ class Conversion{
     return df.parse(dateTime);
   }
 
+  static String convertISOTimeToStandardFormat(String dateTime){
+    DateFormat df = Formats.mobileAppDateTimeFormat();
+    DateFormat dfStandard = Formats.getDateOnlyFormat();
+
+
+    return dfStandard.format(df.parse(dateTime));
+  }
+
+  static String convertISOTimeToStandardFormatWithTime(String dateTime){
+    DateFormat df = Formats.mobileAppDateTimeFormat();
+    DateFormat dfStandard = Formats.getDateTimeStandardFormat();
+
+
+    return dfStandard.format(df.parse(dateTime));
+  }
+
   static String convertUtcTimeToStandardFormat(String dateTime){
     DateFormat df = Formats.bookingManagerDateTimeFormat();
     DateFormat dfStandard = Formats.getDateOnlyFormat();

@@ -16,13 +16,14 @@ class DashboardCalendarFieldWidget extends StatefulWidget {
   final int week;
   final double width;
   final double height;
+  final bool thisYear;
 
   const DashboardCalendarFieldWidget(
       {Key? key,
       required this.yacht,
       required this.week,
       required this.width,
-      required this.height})
+      required this.height, required this.thisYear})
       : super(key: key);
 
   @override
@@ -32,8 +33,15 @@ class DashboardCalendarFieldWidget extends StatefulWidget {
 
 class _DashboardCalendarFieldWidgetState
     extends State<DashboardCalendarFieldWidget> {
+
+
   @override
   Widget build(BuildContext context) {
+    String availability = widget.yacht.availability!;
+
+    if(!widget.thisYear){
+      availability = widget.yacht.availabilityNextYear!;
+    }
     List<Container> days = [];
     double dayWidth = widget.width / 7;
     Color dayColor = CustomColors().calendarBookedColor;
@@ -42,11 +50,11 @@ class _DashboardCalendarFieldWidgetState
     ///CHECK IF WEEK IS BOOKED
     for (int i = 0; i < 7; i++) {
       if (i + (7 * widget.week) < 365) {
-        if (widget.yacht.availability![i + (7 * widget.week)] == "1") {
+        if (availability[i + (7 * widget.week)] == "1") {
           days.add(
               createContainer(CustomColors().calendarBookedColor, dayWidth, i));
           booked = true;
-        } else if (widget.yacht.availability![i + (7 * widget.week)] == "0") {
+        } else if (availability[i + (7 * widget.week)] == "0") {
           days.add(createContainer(
               CustomColors().calendarNothingColor, dayWidth, i));
         } else {

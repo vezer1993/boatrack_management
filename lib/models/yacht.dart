@@ -17,6 +17,7 @@ class Yacht {
   String? image;
   String? updateId;
   String? availability;
+  String? availabilityNextYear;
   int? checkModelId;
   bool? isBeingCleaned;
   String? teltonikaId;
@@ -51,6 +52,7 @@ class Yacht {
     updateId = json['updateId'];
     availability = json['availability'];
     charter = json['charter'];
+    availabilityNextYear = json['nextyearAvailability'];
     isBeingCleaned = json['isBeingCleaned'];
     teltonikaId = json['teltonikaId'];
     checkModelId = json['checkModelId'];
