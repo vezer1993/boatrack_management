@@ -1,5 +1,6 @@
 import 'package:boatrack_management/pages/bookings.dart';
 import 'package:boatrack_management/pages/dashboard.dart';
+import 'package:boatrack_management/pages/employee.dart';
 import 'package:boatrack_management/pages/settings.dart';
 import 'package:boatrack_management/pages/yacht.dart';
 import 'package:boatrack_management/pages/yachts.dart';
@@ -25,6 +26,7 @@ class _MainPageState extends State<MainPage> {
   final PageController _pageController = PageController();
 
   Yacht selectedYacht = Yacht();
+  int selectedEmployeeID = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,8 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   DashboardPage(notifyParent: openYachtPage,),
                   YachtsPage(notifyParent: openYachtPage, yacht: selectedYacht, notifyParentGoPageBack: pageBack,),
-                  BookingsPage(),
+                  const BookingsPage(),
+                  EmployeePage(selectedEmployee: selectedEmployeeID,),
                   const SettingsPage()
                 ],
               ),
@@ -105,12 +108,18 @@ class _MainPageState extends State<MainPage> {
       ),
       SideMenuItem(
         priority: 3,
-        title: 'Settings',
+        title: 'Employees',
         onTap: () => _pageController.jumpToPage(3),
-        icon: const Icon(Icons.settings),
+        icon: const Icon(Icons.supervised_user_circle),
       ),
       SideMenuItem(
         priority: 4,
+        title: 'Settings',
+        onTap: () => _pageController.jumpToPage(4),
+        icon: const Icon(Icons.settings),
+      ),
+      SideMenuItem(
+        priority: 5,
         title: 'Log Out',
         onTap: () {},
         icon: const Icon(Icons.exit_to_app),
@@ -126,7 +135,6 @@ class _MainPageState extends State<MainPage> {
   }
   
   void pageBack(String page){
-    print("hi");
     if(page == "yachts"){
       setState(() {
         selectedYacht = Yacht();

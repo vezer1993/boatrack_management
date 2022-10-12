@@ -1,83 +1,67 @@
-import 'package:boatrack_management/models/check_in_out.dart';
-import 'package:boatrack_management/models/check_model.dart';
-import 'package:boatrack_management/models/cleaning.dart';
-import 'package:boatrack_management/models/issues.dart';
+import 'package:boatrack_management/models/account.dart';
+import 'package:boatrack_management/services/accounts_api.dart';
 import 'package:flutter/material.dart';
-import '../../helpers/conversions.dart';
-import '../../models/yacht.dart';
+
 import '../../resources/colors.dart';
 import '../../resources/styles/box_decorations.dart';
 import '../../resources/styles/text_styles.dart';
 import '../../resources/values.dart';
-import '../../services/yachts_api.dart';
-import 'dart:html' as html;
 
-class YachtCleaningListWidget extends StatefulWidget {
-  final Yacht yacht;
-  final double containerHeight;
+class EmployeeListWidget extends StatefulWidget {
+  final int selectedEmployee;
+  final Function notifyParent;
 
-  const YachtCleaningListWidget(
-      {Key? key, required this.yacht, required this.containerHeight})
+  const EmployeeListWidget({Key? key, required this.selectedEmployee, required this.notifyParent})
       : super(key: key);
 
   @override
-  State<YachtCleaningListWidget> createState() =>
-      _YachtCleaningListWidgetState();
+  State<EmployeeListWidget> createState() => _EmployeeListWidgetState();
 }
 
-class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
+class _EmployeeListWidgetState extends State<EmployeeListWidget> {
+  late List<Accounts> futureData;
+  bool dataLoaded = false;
+
+  Future getEmployeeList() async {
+    if (!dataLoaded) {
+      futureData = await getUserList();
+      dataLoaded = true;
+    }
+    return futureData;
+  }
 
   double pageSelectionHeight = 50;
   double columnWidth = 130;
   double columnHeight = 37;
 
+  double containerHeight = 250;
+
   int itemsPerPage = 4;
   int page = 1;
 
-  bool dataLoaded = false;
-  List<Cleaning> data = [];
-
-  Future getIssuesForYacht() async {
-    if (!dataLoaded) {
-      data = await getCleanings(widget.yacht.id!);
-      dataLoaded = true;
-    }
-    return data;
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getIssuesForYacht(),
+        future: getEmployeeList(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.none) {
             return const Text("NO CONNECTION");
           } else if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            if (data.isEmpty) {
-              return SizedBox(
-                height: widget.containerHeight,
-                child: Center(
-                  child: Text(
-                    "Currently no data",
-                    style: CustomTextStyles.textStyleTitle(context),
-                  ),
-                ),
-              );
-            }
 
-            int pageCount = (data.length / 4).ceil();
+            int pageCount = (futureData.length / 4).ceil();
 
             return SizedBox(
-                height: widget.containerHeight,
+                height: containerHeight,
                 child: Column(
                   children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: SizedBox(
                         width: columnWidth * 6,
-                        height: widget.containerHeight - pageSelectionHeight,
+                        height: containerHeight - pageSelectionHeight,
                         child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,
@@ -94,37 +78,37 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text("STARTED",
-                                                  style: CustomTextStyles
-                                                      .textStyleTableHeader(
-                                                      context))),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text("FINISHED",
-                                                  style: CustomTextStyles
-                                                      .textStyleTableHeader(
-                                                      context))),
-                                        ),
-                                      ),
-                                      SizedBox(
                                         width: columnWidth * 2,
                                         child: Padding(
                                           padding: StaticValues
                                               .standardTableItemPadding(),
                                           child: Center(
+                                              child: Text("NAME",
+                                                  style: CustomTextStyles
+                                                      .textStyleTableHeader(
+                                                      context))),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: columnWidth,
+                                        child: Padding(
+                                          padding: StaticValues
+                                              .standardTableItemPadding(),
+                                          child: Center(
+                                              child: Text("USERNAME",
+                                                  style: CustomTextStyles
+                                                      .textStyleTableHeader(
+                                                      context))),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: columnWidth,
+                                        child: Padding(
+                                          padding: StaticValues
+                                              .standardTableItemPadding(),
+                                          child: Center(
                                               child: Text(
-                                                "EMPLOYEE",
+                                                "PIN",
                                                 style: CustomTextStyles
                                                     .textStyleTableHeader(context),
                                               )),
@@ -136,7 +120,7 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                                           padding: StaticValues
                                               .standardTableItemPadding(),
                                           child: Center(
-                                              child: Text("ISSUES",
+                                              child: Text("ROLES",
                                                   style: CustomTextStyles
                                                       .textStyleTableHeader(
                                                       context))),
@@ -149,79 +133,83 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                               index -= 1;
 
                               if ((index + ((page - 1) * itemsPerPage)) <
-                                  data.length) {
+                                  futureData.length) {
                                 int i = index + ((page - 1) * itemsPerPage);
 
-                                Cleaning b = data[i];
+                                Accounts a = futureData[i];
 
-                                String dateStarted = Conversion.convertISOTimeToStandardFormatWithTime(
-                                    b.timeStarted.toString());
-                                String dateFinished = Conversion.convertISOTimeToStandardFormatWithTime(
-                                    b.timeFinished.toString());
+                                Color backgroundColor = Colors.transparent;
 
-                                return Container(
-                                  width: columnWidth * 5,
-                                  height: (widget.containerHeight -
-                                      columnHeight -
-                                      pageSelectionHeight) /
-                                      itemsPerPage,
-                                  decoration:
-                                  CustomBoxDecorations.topAndBottomBorder(),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(dateStarted,
-                                                  style: CustomTextStyles
-                                                      .textStyleTableColumn(
-                                                      context))),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                            child: Text(dateFinished,
-                                                style: CustomTextStyles
-                                                    .textStyleTableColumn(
-                                                    context)),
+                                if(widget.selectedEmployee == a.id){
+                                    backgroundColor = CustomColors().selectedItemColor;
+                                }
+
+                                return InkWell(
+                                  onTap: () {
+                                    widget.notifyParent(a.id);
+                                  },
+                                  child: Container(
+                                    width: columnWidth * 5,
+                                    height: (containerHeight -
+                                        columnHeight -
+                                        pageSelectionHeight) /
+                                        itemsPerPage,
+                                    decoration:
+                                    CustomBoxDecorations.topAndBottomBorder().copyWith(color: backgroundColor),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: columnWidth * 2,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(a.name.toString(),
+                                                    style: CustomTextStyles
+                                                        .textStyleTableColumn(
+                                                        context))),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth * 2,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(
-                                                b.employee.toString(),
-                                                style: CustomTextStyles
-                                                    .textStyleTableColumn(context),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(b.hasIssues.toString(),
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                              child: Text(a.username.toString(),
                                                   style: CustomTextStyles
                                                       .textStyleTableColumn(
-                                                      context))),
+                                                      context)),
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(
+                                                  a.pin.toString(),
+                                                  style: CustomTextStyles
+                                                      .textStyleTableColumn(context),
+                                                )),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text("TODO",
+                                                    style: CustomTextStyles
+                                                        .textStyleTableColumn(
+                                                        context))),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 );
                               } else {
