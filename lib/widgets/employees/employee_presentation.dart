@@ -3,6 +3,8 @@ import 'package:boatrack_management/resources/styles/text_styles.dart';
 import 'package:boatrack_management/widgets/containers/double_widget_container.dart';
 import 'package:boatrack_management/widgets/containers/multi_widget_container.dart';
 import 'package:boatrack_management/widgets/employees/employee_cleaning_list.dart';
+import 'package:boatrack_management/widgets/employees/sub_widgets/employee_yachts_average_time_widget.dart';
+import 'package:boatrack_management/widgets/employees/sub_widgets/employee_yachts_cleaned_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/account.dart';
@@ -52,7 +54,7 @@ class _EmployeePresentationWidgetState
                 children: [
                   Text(account.name.toString().toUpperCase(), style: CustomTextStyles.textStyleTitle(context),),
                   const SizedBox(height: 30,),
-                  MultiWidgetContainer(rightWidget: Text("hi bottom"), topLeftWidget: Text("Hi"), mainWidget: EmployeeCleaningList(employeeID: widget.selectedEmployee, containerHeight: 325, cleanings: cleanings,), containerHeight: 370, topRightWidget: Text("hi"),)
+                  MultiWidgetContainer(rightWidget: Text("hi bottom"), topLeftWidget: EmployeeYachtsCleanedWidget(cleanings: cleanings), mainWidget: EmployeeCleaningList(employeeID: widget.selectedEmployee, containerHeight: 325, cleanings: cleanings,), containerHeight: 370, topRightWidget: EmployeeAverageCleaningTimeWidget(cleanings: cleanings,),)
                 ],
               );
             }

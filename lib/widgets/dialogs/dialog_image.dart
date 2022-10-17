@@ -15,14 +15,14 @@ class _DialogShowImageState extends State<DialogShowImage> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        width: 200,
-        height: 200,
+        width: 600,
+        height: 600,
         child: ImageNetwork(
           image: widget.imagePath,
           imageCache: CachedNetworkImageProvider(
               widget.imagePath),
-          width: 200,
-          height: 200,
+          width: 600,
+          height: 600,
           duration: 1500,
           curve: Curves.easeIn,
           onPointer: false,

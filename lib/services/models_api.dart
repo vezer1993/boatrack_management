@@ -46,9 +46,10 @@ Future deleteCheckModel(CheckModel model, BuildContext context) async {
 
 Future getCheckModels() async {
   Charter temp = await getCharter();
-  http.Response response = await getResponse(StaticStrings.getPathModels() + "/" + temp.id.toString());
+  http.Response response = await getResponse(StaticStrings.getPathModels());
 
   var jsonMap = json.decode(response.body);
+  print(response.body);
 
   List<CheckModel> models = [];
 
