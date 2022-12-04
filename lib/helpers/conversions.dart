@@ -14,6 +14,11 @@ class Conversion{
     return df.parse(dateTime);
   }
 
+  static DateTime convertISOMobileStringToDateTime(String dateTime){
+    DateFormat df = Formats.mobileAppDateTimeFormat();
+    return df.parse(dateTime);
+  }
+
   static String convertISOTimeToStandardFormat(String dateTime){
     DateFormat df = Formats.mobileAppDateTimeFormat();
     DateFormat dfStandard = Formats.getDateOnlyFormat();
@@ -25,6 +30,14 @@ class Conversion{
   static String convertISOTimeToStandardFormatWithTime(String dateTime){
     DateFormat df = Formats.mobileAppDateTimeFormat();
     DateFormat dfStandard = Formats.getDateTimeStandardFormat();
+
+
+    return dfStandard.format(df.parse(dateTime));
+  }
+
+  static String convertISOTimeToStandardFormatOnlyTime(String dateTime){
+    DateFormat df = Formats.mobileAppDateTimeFormat();
+    DateFormat dfStandard = Formats.getTimeStandardFormat();
 
 
     return dfStandard.format(df.parse(dateTime));

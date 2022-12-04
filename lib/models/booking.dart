@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:boatrack_management/models/charter.dart';
 import 'package:boatrack_management/models/cleaning.dart';
+import 'package:boatrack_management/models/yacht.dart';
 
+import 'booking_item.dart';
 import 'check_in_out.dart';
 
 class Booking {
@@ -26,6 +30,7 @@ class Booking {
   CheckInOut? checkIn;
   CheckInOut? checkOut;
   Cleaning? cleaning;
+  Yacht? yacht;
   List<Cleaning>? cleanings;
   Charter? charter;
 
@@ -109,5 +114,32 @@ class Booking {
       data['cleanings'] = this.cleanings!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  List<BookingItem> getPayableAtBaseBookingItems (){
+    List<BookingItem> items = [];
+    String jsonString = this.items!.replaceAll('/', '');
+    var jsonMap = json.decode(jsonString);
+    for(var json in jsonMap){
+      BookingItem item = BookingItem.fromJson(json);
+      /*if(item.payableInBase!){
+        items.add(item);
+      }*/
+      items.add(item);
+    }
+    return items;
+  }
+
+  List<BookingItem> getPayableBeforeBaseBookingItems (){
+    List<BookingItem> items = [];
+    String jsonString = this.items!.replaceAll('/', '');
+    var jsonMap = json.decode(jsonString);
+    for(var json in jsonMap){
+      BookingItem item = BookingItem.fromJson(json);
+      if(!item.payableInBase!){
+        items.add(item);
+      }
+    }
+    return items;
   }
 }

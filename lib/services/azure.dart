@@ -25,6 +25,27 @@ Future<String> uploadImageToAzure(BuildContext context, String fileName, String 
   return "";
 }
 
+Future<String> uploadDocumentToAzure(BuildContext context, String fileName, String extension, Uint8List content) async {
+  String checkInOutContainer = "documents";
+  String path = "https://boatrackstorage.blob.core.windows.net/documents/";
+
+  try {
+    var storage = AzureStorage.parse(connectionString);
+    String? contentType = lookupMimeType(fileName);
+    String name = "${DateTime.now().millisecondsSinceEpoch}_$fileName";
+    await storage.putBlob('/$checkInOutContainer/$name', bodyBytes: content,
+      contentType: contentType,
+      type: BlobType.BlockBlob,);
+    return path + name;
+  } on AzureStorageException catch (ex) {
+    print(ex.message);
+  } catch (err) {
+    print(err);
+  }
+
+  return "";
+}
+
 
 Map<String, String> createHeaders() {
   return {

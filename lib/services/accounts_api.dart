@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:boatrack_management/models/employeeTask.dart';
 import 'package:boatrack_management/services/charter_api.dart';
 import 'package:boatrack_management/services/web_services.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,34 @@ Future postNewAccount(Accounts acc, BuildContext context) async {
   }else{
     return false;
   }
+}
+
+Future postNewTask(EmployeeTask task, BuildContext context) async {
+  var response = await postResponse("/Task", task.toJson(), context) as http.Response;
+
+  if(response.statusCode.toString().startsWith("2")){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+Future getUnresolvedTasks() async {
+  Charter temp = await getCharter();
+  var response = await getResponse("/Task/list/" + temp.id.toString()) as http.Response;
+  var jsonString = response.body;
+
+  //DECODE TO JSON
+  var jsonMap = json.decode(jsonString);
+
+  /// PARSE JSON AND ADD TO LIST
+  List<EmployeeTask> list = [];
+  for(var json in jsonMap){
+    EmployeeTask e = EmployeeTask.fromJson(json);
+    list.add(e);
+  }
+
+  return list;
 }
 
 Future loginToWeb(String username, String password) async{

@@ -9,7 +9,12 @@ class Formats {
 
   static getDateTimeStandardFormat(){
 
-    return DateFormat("dd.MM.yyyy hh:mm:ss");
+    return DateFormat("dd.MM.yyyy HH:mm:ss");
+  }
+
+  static getTimeStandardFormat(){
+
+    return DateFormat("hh:mm:ss");
   }
 
   static bookingManagerDateTimeFormat(){
@@ -17,7 +22,7 @@ class Formats {
   }
 
   static mobileAppDateTimeFormat(){
-    return DateFormat("yyyy-MM-ddThh:mm:ss.SSS");
+    return DateFormat("yyyy-MM-ddTHH:mm:ss");
   }
 
   ///CURRENCY FORMATS

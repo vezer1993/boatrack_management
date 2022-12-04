@@ -1,10 +1,10 @@
 class StaticStrings{
 
   ///UI
-  static String buttonTextEdit = "Edit" ;
-  static String buttonTextCancel = "Cancel" ;
-  static String buttonTextSave = "Save" ;
-  static String buttonTextNew = "New";
+  static String buttonTextEdit = "EDIT" ;
+  static String buttonTextCancel = "CANCEL" ;
+  static String buttonTextSave = "SAVE" ;
+  static String buttonTextNew = "NEW";
   static String buttonTextNewModel = "New Check in/out model";
 
   static String getButtonTextEdit (){
@@ -81,7 +81,7 @@ class StaticStrings{
   //local: localhost:5001
   //azure: boatrackservices.azurewebsites.net
   static String getApiURL (){
-    return "boatrackservices.azurewebsites.net";
+    return "localhost:5001";
   }
 
   static String getTeltonikaApiURL (){
@@ -109,6 +109,27 @@ class StaticStrings{
     return "/Yachts";
   }
 
+  ///BOOKING PATHS
+  static String getPathBookingPreparation(){
+    return "/Bookings/preparation";
+  }
+
+  static String getPathBookingPostGuest(){
+    return "/Guests";
+  }
+
+  static String getPathBooking(){
+    return "/Bookings";
+  }
+
+  static String getPathBookingArrival(){
+    return "/Bookings/arrival";
+  }
+
+  static String getPathBookingNote(){
+    return "/note";
+  }
+
   /// CHARTER PATHS
   static String getPathCharter(){
     return "/Charters";
@@ -120,6 +141,10 @@ class StaticStrings{
 
   static String getPathCharterTeltonikaParam(){
     return "teltonikaToken";
+  }
+
+  static String getPathBookingNoteParam(){
+    return "note";
   }
 
   static String getPathYachtCheckModel(){
@@ -142,12 +167,21 @@ class StaticStrings{
     return"/Issues/list";
   }
 
+  static String getPathIssue(){
+    return"/Issues";
+  }
+
   static String getPathCleaningList(){
     return"/Cleanings/list";
   }
 
   static String getPathCleaningForUserList(){
     return"/Cleanings/user";
+  }
+
+  ///NOTIFICATION PATHS
+  static String getNotificationListPath(){
+    return "/Notifications/list";
   }
 
 
@@ -167,6 +201,10 @@ class StaticStrings{
 
   static String getCharterSession(){
     return "charter_session";
+  }
+
+  static String getNotificationSession(){
+    return "notification_session";
   }
 
   ///Yacht

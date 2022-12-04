@@ -28,13 +28,13 @@ class Charter {
     if (json['accounts'] != null) {
       accounts = <Accounts>[];
       json['accounts'].forEach((v) {
-        accounts!.add(new Accounts.fromJson(v));
+        accounts!.add(Accounts.fromJson(v));
       });
     }
     if (json['bookings'] != null) {
       bookings = <Booking>[];
       json['bookings'].forEach((v) {
-        bookings!.add(new Booking.fromJson(v));
+        bookings!.add(  Booking.fromJson(v));
       });
     }
   }

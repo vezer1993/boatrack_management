@@ -1,6 +1,7 @@
 import 'package:boatrack_management/resources/separators.dart';
 import 'package:boatrack_management/resources/strings.dart';
 import 'package:boatrack_management/resources/styles/text_styles.dart';
+import 'package:boatrack_management/widgets/yachts/yachts_map.dart';
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
 import '../../helpers/calendar_calculations.dart';
@@ -430,7 +431,7 @@ class _YachtPresentationWidgetState extends State<YachtPresentationWidget> {
             Container(
               width: rightSideWidth,
               height: imageHeight,
-              color: Colors.black,
+              child: YachtsMapWidget(yachts: [widget.yacht],)
             )
           ],
         ),

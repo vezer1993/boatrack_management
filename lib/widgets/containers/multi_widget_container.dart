@@ -27,6 +27,9 @@ class _MultiWidgetContainerState extends State<MultiWidgetContainer> {
     double smallContainerDimension = (widget.containerHeight / 2) - (Separators.dashboardVerticalSeparator().height!/2);
     double rightContainerHeight = smallContainerDimension;
 
+    double smallerRightContainerHeight = smallContainerDimension * 0.5;
+    double biggerRightContainerHeight = smallContainerDimension * 1.5;
+
     if(MediaQuery.of(context).size.width < 1300){
       double difference = 1300 - MediaQuery.of(context).size.width;
       smallContainerDimension = smallContainerDimension - (difference / 4);
@@ -58,7 +61,7 @@ class _MultiWidgetContainerState extends State<MultiWidgetContainer> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        height: smallContainerDimension,
+                        height: smallerRightContainerHeight,
                         width: smallContainerDimension,
                         decoration: CustomBoxDecorations.standardBoxDecoration(),
                         child: Padding(
@@ -72,7 +75,7 @@ class _MultiWidgetContainerState extends State<MultiWidgetContainer> {
                         ),
                       ),
                       Container(
-                        height: smallContainerDimension,
+                        height: smallerRightContainerHeight,
                         width: smallContainerDimension,
                         decoration: CustomBoxDecorations.standardBoxDecoration(),
                         child: Padding(
@@ -92,7 +95,7 @@ class _MultiWidgetContainerState extends State<MultiWidgetContainer> {
                     children: [
                       Expanded(
                         child: Container(
-                          height: rightContainerHeight,
+                          height: biggerRightContainerHeight,
                           decoration: CustomBoxDecorations.standardBoxDecoration(),
                           child: Padding(
                             padding: EdgeInsets.all(StaticValues.standardContainerPadding),

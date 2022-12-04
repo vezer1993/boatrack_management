@@ -23,7 +23,7 @@ class _EmployeeYachtsCleanedWidgetState
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 100,
+          height: 32,
           child: Center(
             child: Text(widget.cleanings.length.toString(), style: CustomTextStyles.textStyleTitle(context),),
           ),

@@ -71,6 +71,16 @@ Future putResponseNoParam(BuildContext context, String path, var body) async {
   return response;
 }
 
+Future putResponseNoBody(BuildContext context, String path) async {
+  var client = http.Client();
+  path = StaticStrings.getApiVersion() + path;
+  var url = Uri.https(StaticStrings.getApiURL().toString(), path.toString());
+  var response = await client.put(url, headers: createHeaders());
+  interceptResponse(response, context);
+
+  return response;
+}
+
 void interceptResponse(http.Response response, BuildContext context) {
   if(response.statusCode.toString().startsWith("2")){
     LottieManager.showSuccessMessage(context);

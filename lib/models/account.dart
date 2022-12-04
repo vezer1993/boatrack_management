@@ -28,7 +28,6 @@ class Accounts {
     isAdmin = json['isAdmin'];
     pin = json['pin'];
     charter = json['charter'];
-    cleanings = json['cleanings'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {

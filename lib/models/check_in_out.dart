@@ -10,7 +10,7 @@ class CheckInOut {
   String? document;
   String? timestamp;
   List<String>? bookings;
-  List<IssuesNavigation>? issuesNavigation;
+  List<IssueItem>? issuesNavigation;
 
   CheckInOut(
       {this.id,
@@ -34,9 +34,9 @@ class CheckInOut {
     timestamp = json['timestampData'];
     bookings = json['bookings'].cast<String>();
     if (json['issuesNavigation'] != null) {
-      issuesNavigation = <IssuesNavigation>[];
+      issuesNavigation = <IssueItem>[];
       json['issuesNavigation'].forEach((v) {
-        issuesNavigation!.add(IssuesNavigation.fromJson(v));
+        issuesNavigation!.add(IssueItem.fromJson(v));
       });
     }
   }

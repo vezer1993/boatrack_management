@@ -63,8 +63,10 @@ class _YachtsPageState extends State<YachtsPage> {
                       Separators.dashboardVerticalSeparator(),
                       FullWidthContainer(
                           title: "Boats",
-                          childWidget: DashboardYachtListWidget(
-                            yachts: futureData, notifyParent: notifyParent,
+                          childWidget: Center(
+                            child: DashboardYachtListWidget(
+                              yachts: futureData, notifyParent: notifyParent,
+                            ),
                           )),
                       Separators.dashboardVerticalSeparator(),
                     ],

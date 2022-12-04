@@ -28,6 +28,8 @@ class _DoubleWidgetContainerState extends State<DoubleWidgetContainer> {
     double width = MediaQuery.of(context).size.width;
     if (width > StaticValues.doubleWidgetBreakLimit) {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               child: Container(

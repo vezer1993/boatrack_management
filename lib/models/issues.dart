@@ -1,6 +1,6 @@
 import 'issues_images.dart';
 
-class IssuesNavigation {
+class IssueItem {
   int? id;
   String? name;
   String? description;
@@ -8,6 +8,7 @@ class IssuesNavigation {
   int? checkoutId;
   bool? hasPictures;
   int? cleaningId;
+  int? yachtId;
   String? timestamp;
   String? resolutionNote;
   bool? resolved;
@@ -15,27 +16,30 @@ class IssuesNavigation {
   String? checkin;
   String? checkout;
   String? cleaning;
+  int? accountID;
   List<IssueImages>? issueImages;
 
-  IssuesNavigation(
+  IssueItem(
       {this.id,
-        this.name,
-        this.description,
-        this.checkinId,
-        this.checkoutId,
-        this.hasPictures,
-        this.cleaningId,
-        this.checkin,
-        this.checkout,
-        this.cleaning,
-        this.issueImages});
+      this.name,
+      this.description,
+      this.checkinId,
+      this.checkoutId,
+      this.hasPictures,
+      this.cleaningId,
+      this.checkin,
+      this.yachtId,
+      this.checkout,
+      this.cleaning,
+      this.accountID,
+      this.issueImages});
 
-  IssuesNavigation.fromJson(Map<String, dynamic> json) {
+  IssueItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
     resolutionNote = json['resolutionNote'];
-    timestamp = json['timeStamp'];
+    timestamp = json['timestamp'];
     document = json['document'];
     resolved = json['resolved'];
     checkoutId = json['checkoutId'];
@@ -43,8 +47,10 @@ class IssuesNavigation {
     hasPictures = json['hasPictures'];
     cleaningId = json['cleaningId'];
     checkin = json['checkin'];
+    yachtId = json['yachtId'];
     checkout = json['checkout'];
     cleaning = json['cleaning'];
+    accountID = json['accountId'];
     if (json['issueImages'] != null) {
       issueImages = <IssueImages>[];
       json['issueImages'].forEach((v) {
@@ -69,5 +75,16 @@ class IssuesNavigation {
       data['issueImages'] = this.issueImages!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  List<String> getImageList() {
+    List<String> images = [];
+    if (hasPictures!) {
+      for(IssueImages img in issueImages!){
+        images.add(img.imagePath.toString());
+      }
+    }
+
+    return images;
   }
 }

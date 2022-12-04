@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../resources/separators.dart';
 import '../widgets/containers/double_widget_container.dart';
 import '../widgets/containers/full_width_container.dart';
+import '../widgets/dashboard/dashboard_employee_task_list_widget.dart';
 import '../widgets/dashboard/dashboard_yacht_list_widget.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Separators.dashboardVerticalSeparator(),
-                      DoubleWidgetContainer(title1:  StaticStrings.dashboardYachtListTitle, widget1: DashboardYachtListWidget(yachts: futureData, notifyParent: notifyParent,),title2: StaticStrings.currentBookingsHeader, widget2: DashboardCurrentBookingWidget(yachts: futureData,),),
+                      DoubleWidgetContainer(title1:  StaticStrings.dashboardYachtListTitle, widget1: DashboardYachtListWidget(yachts: futureData, notifyParent: notifyParent,),title2: "ACTIVE TASKS", widget2: const EmployeeTaskListWidget(),),
                       Separators.dashboardVerticalSeparator(),
                       //HalfSizeContainer(parentSize: mySize)
                     ],

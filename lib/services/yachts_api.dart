@@ -48,6 +48,22 @@ Future getYachtList() async {
   return list;
 }
 
+Future getYachtForID(int yachtID) async {
+
+  var jsonString = SessionStorage.getValue(StaticStrings.getYachtListSession()).toString();
+  //DECODE TO JSON
+  var jsonMap = json.decode(jsonString);
+
+  /// PARSE JSON AND ADD TO LIST
+  List<Yacht> list = [];
+  for(var json in jsonMap){
+    Yacht y = Yacht.fromJson(json);
+    list.add(y);
+  }
+
+  return list.where((element) => element.id == yachtID).first;
+}
+
 /// UPDATE YACHT LIST
 Future updateYachtList() async {
 
@@ -125,9 +141,9 @@ Future getIssues(int yachtID) async {
   var jsonMap = json.decode(jsonString);
 
   /// PARSE JSON AND ADD TO LIST
-  List<IssuesNavigation> list = [];
+  List<IssueItem> list = [];
   for(var json in jsonMap){
-    IssuesNavigation y = IssuesNavigation.fromJson(json);
+    IssueItem y = IssueItem.fromJson(json);
     list.add(y);
   }
 

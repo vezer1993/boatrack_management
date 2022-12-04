@@ -1,6 +1,7 @@
 import 'package:boatrack_management/models/check_in_out.dart';
 import 'package:boatrack_management/models/check_model.dart';
 import 'package:boatrack_management/models/issues.dart';
+import 'package:boatrack_management/widgets/dialogs/dialog_issue_explorer.dart';
 import 'package:flutter/material.dart';
 import '../../helpers/conversions.dart';
 import '../../models/yacht.dart';
@@ -35,7 +36,7 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
   int page = 1;
 
   bool dataLoaded = false;
-  List<IssuesNavigation> issues = [];
+  List<IssueItem> issues = [];
 
   Future getIssuesForYacht() async {
     if (!dataLoaded) {
@@ -164,7 +165,7 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
                                   issues.length) {
                                 int i = index + ((page - 1) * itemsPerPage);
 
-                                IssuesNavigation b = issues[i];
+                                IssueItem b = issues[i];
 
                                 String dateDone = "-";
                                 if(b.timestamp != null){
@@ -173,85 +174,95 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
                                       b.timestamp.toString());
                                 }
 
-                                return Container(
-                                  width: columnWidth * 6,
-                                  height: (widget.containerHeight -
-                                      columnHeight -
-                                      pageSelectionHeight) /
-                                      itemsPerPage,
-                                  decoration:
-                                  CustomBoxDecorations.topAndBottomBorder(),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(dateDone,
-                                                  style: CustomTextStyles
-                                                      .textStyleTableColumn(
-                                                      context))),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                            child: InkWell(
-                                                onTap: () {
-                                                  downloadFile(b.document.toString());
-                                                },
-                                                child: Text(b.name.toString(),
+                                return InkWell(
+                                  onTap: (){
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return DialogIssueExplorer(issueID: issues[i].id.toString());
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: columnWidth * 6,
+                                    height: (widget.containerHeight -
+                                        columnHeight -
+                                        pageSelectionHeight) /
+                                        itemsPerPage,
+                                    decoration:
+                                    CustomBoxDecorations.topAndBottomBorder(),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(dateDone,
                                                     style: CustomTextStyles
                                                         .textStyleTableColumn(
                                                         context))),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth * 2,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(
-                                                b.description.toString(),
-                                                style: CustomTextStyles
-                                                    .textStyleTableColumn(context),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    downloadFile(b.document.toString());
+                                                  },
+                                                  child: Text(b.name.toString(),
+                                                      style: CustomTextStyles
+                                                          .textStyleTableColumn(
+                                                          context))),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(b.hasPictures.toString(),
+                                        SizedBox(
+                                          width: columnWidth * 2,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(
+                                                  b.description.toString(),
                                                   style: CustomTextStyles
-                                                      .textStyleTableColumn(
-                                                      context))),
+                                                      .textStyleTableColumn(context),
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                )),
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: columnWidth,
-                                        child: Padding(
-                                          padding: StaticValues
-                                              .standardTableItemPadding(),
-                                          child: Center(
-                                              child: Text(b.resolved.toString(),
-                                                  style: CustomTextStyles
-                                                      .textStyleTableColumn(
-                                                      context))),
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(b.hasPictures.toString(),
+                                                    style: CustomTextStyles
+                                                        .textStyleTableColumn(
+                                                        context))),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          width: columnWidth,
+                                          child: Padding(
+                                            padding: StaticValues
+                                                .standardTableItemPadding(),
+                                            child: Center(
+                                                child: Text(b.resolved.toString(),
+                                                    style: CustomTextStyles
+                                                        .textStyleTableColumn(
+                                                        context))),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               } else {

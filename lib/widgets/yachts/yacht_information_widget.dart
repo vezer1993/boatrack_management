@@ -7,12 +7,14 @@ import 'package:boatrack_management/widgets/yachts/yacht_cleaning_list_widget.da
 import 'package:boatrack_management/widgets/yachts/yacht_issues_list_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/cleaning.dart';
 import '../../models/yacht.dart';
 
 class YachtInformationWidget extends StatefulWidget {
   final Yacht yacht;
   final double containerHeight;
-  const YachtInformationWidget({Key? key, required this.yacht, required this.containerHeight}) : super(key: key);
+  final Function? callback;
+  const YachtInformationWidget({Key? key, required this.yacht, required this.containerHeight, this.callback}) : super(key: key);
 
   @override
   State<YachtInformationWidget> createState() => _YachtInformationWidgetState();
@@ -32,7 +34,7 @@ class _YachtInformationWidgetState extends State<YachtInformationWidget> {
 
     double containerHeight = widget.containerHeight - (2 * StaticValues.standardContainerPadding) - StaticValues.halfContainerTableHeaderHeight - StaticValues.itemVerticalSeparator;
 
-    List<Widget> selectedWidget = [YachtBookingListWidget(bookings: widget.yacht.getBookingList(), containerHeight: containerHeight,), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: true), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: false), YachtCleaningListWidget(yacht: widget.yacht, containerHeight: containerHeight), YachtIssueListWidget(yacht: widget.yacht, containerHeight: containerHeight), Text("HELLO 6")];
+    List<Widget> selectedWidget = [YachtBookingListWidget(bookings: widget.yacht.getBookingList(), containerHeight: containerHeight,), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: true), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: false), YachtCleaningListWidget(yacht: widget.yacht, containerHeight: containerHeight, callback: callback,), YachtIssueListWidget(yacht: widget.yacht, containerHeight: containerHeight), Text("HELLO 6")];
 
     return Column(
       children: [
@@ -170,5 +172,9 @@ class _YachtInformationWidgetState extends State<YachtInformationWidget> {
         selectedWidget[selectedTabIndex]
       ],
     );
+  }
+
+  void callback(Cleaning c){
+    widget.callback!(c);
   }
 }
