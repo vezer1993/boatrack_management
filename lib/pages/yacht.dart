@@ -1,5 +1,6 @@
 import 'package:boatrack_management/widgets/containers/double_widget_container.dart';
 import 'package:boatrack_management/widgets/containers/multi_widget_container.dart';
+import 'package:boatrack_management/widgets/yachts/sub_widgets/yacht_engine_temperature.dart';
 import 'package:boatrack_management/widgets/yachts/yacht_presentation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import '../models/yacht.dart';
 import '../resources/separators.dart';
 import '../widgets/containers/full_width_container.dart';
 import '../widgets/user_interface/header.dart';
+import '../widgets/yachts/sub_widgets/yacht_data_used.dart';
 import '../widgets/yachts/yacht_information_widget.dart';
 import '../widgets/yachts/yacht_model_select_widget.dart';
 
@@ -36,7 +38,7 @@ class _YachtPageState extends State<YachtPage> {
               childWidget: YachtPresentationWidget(yacht: widget.yacht),
             ),
             Separators.dashboardVerticalSeparator(),
-            MultiWidgetContainer(topLeftWidget: Text("hi2"), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 400), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: Text("hi4"), containerHeight: 400,)
+            MultiWidgetContainer(topLeftWidget: const YachtDataUsedWidget(), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 400), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: YachtEngineTemperature(), containerHeight: 400,)
           ],
         ),
       ),

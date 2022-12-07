@@ -56,9 +56,9 @@ Future loginToWeb(String username, String password) async{
 
   if(response.statusCode.toString().startsWith("2")){
     SessionStorage.saveValue(StaticStrings.getCharterSession(), response.body);
-    return true;
+    return response;
   }else{
-    return false;
+    return response;
   }
 
 }

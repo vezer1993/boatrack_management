@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:boatrack_management/resources/separators.dart';
 import 'package:boatrack_management/resources/styles/box_decorations.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +9,19 @@ import '../resources/styles/button_styles.dart';
 import '../resources/styles/text_styles.dart';
 import '../services/accounts_api.dart';
 
-class Loginpage extends StatefulWidget {
-  const Loginpage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<Loginpage> createState() => _LoginpageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
-
+class _LoginPageState extends State<LoginPage> {
+  bool authenticating = false;
   TextEditingController usernameTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+  TextEditingController errorMessageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,10 @@ class _LoginpageState extends State<Loginpage> {
                         width: elementWidth,
                         height: elementHeight,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: authenticating ? null : () {
+                            setState(() {
+                              authenticating = true;
+                            });
                             login();
                           },
                           style: CustomButtonStyles.getStandardButtonStyle(),
@@ -87,7 +94,20 @@ class _LoginpageState extends State<Loginpage> {
                             "LOGIN",
                             style: CustomTextStyles.getButtonTextStyle(context),
                           ),
-                        ))
+                        )),
+                    Separators.dashboardVerticalSeparator(),
+                    Visibility(visible: errorMessageController.text != "", child: Text(errorMessageController.text.toString(), style: CustomTextStyles.textStyleTableColumn(context)?.copyWith(color: CustomColors().failBoxCheckMarkColor),),),
+                    Visibility(visible: authenticating, child: SizedBox(
+                      width: 200,
+                      child: SpinKitWave(
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: CustomColors().primaryColor,
+                            ),
+                          );
+                        },),
+                    )),
                   ],
                 ),
               ),
@@ -97,10 +117,25 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   Future login () async {
-    bool loggedIn = await loginToWeb(usernameTextController.text, passwordTextController.text);
-
-    if(loggedIn){
+    var response = await loginToWeb(usernameTextController.text, passwordTextController.text) as http.Response;
+    
+    print(response.body);
+    if(response.statusCode.toString().startsWith("2") ){
       Get.offNamed('/dashboard');
+    }else{
+      setState(() {
+        if(response.body == "username"){
+          errorMessageController.text = "User with username ${usernameTextController.text} doesn't exist";
+        }else if(response.body == "password"){
+          errorMessageController.text = "Password is not correct";
+        }
+          else{
+          errorMessageController.text = response.body;
+          print(response.statusCode.toString());
+        }
+
+        authenticating = false;
+      });
     }
   }
 }

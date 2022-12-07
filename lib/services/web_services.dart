@@ -91,10 +91,9 @@ void interceptResponse(http.Response response, BuildContext context) {
 Map<String, String> createHeaders() {
   return {
     "Access-Control_Allow_Origin": "*",
+    'Access-Control-Allow-Methods': 'GET, DELETE, HEAD, OPTIONS, POST, PUT',
+    'Access-Control-Allow-Credentials': 'true',
     "Accept": "text/plain",
     "Content-Type": "application/json-patch+json",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
   };
 }

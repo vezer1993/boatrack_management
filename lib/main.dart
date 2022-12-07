@@ -25,7 +25,7 @@ void main() {
       ),
       GetPage(
           name: '/login',
-          page: () => const Loginpage(),
+          page: () => const LoginPage(),
           middlewares: [LoginPageMiddleware()]),
     ],
   ));

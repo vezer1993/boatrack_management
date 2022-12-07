@@ -134,9 +134,27 @@ Future getCheckInOuts(bool checkin, int yachtID) async {
 }
 
 Future getIssues(int yachtID) async {
-  var response = await getResponse(StaticStrings.getPathIssues() + "/" + yachtID.toString()) as http.Response;
+  var response = await getResponse(StaticStrings.getPathIssuesList() + "/" + yachtID.toString()) as http.Response;
   var jsonString = response.body;
 
+  //DECODE TO JSON
+  var jsonMap = json.decode(jsonString);
+
+  /// PARSE JSON AND ADD TO LIST
+  List<IssueItem> list = [];
+  for(var json in jsonMap){
+    IssueItem y = IssueItem.fromJson(json);
+    list.add(y);
+  }
+
+  return list;
+}
+
+Future getUnresolvedIssues() async {
+  Charter ch = await getCharter();
+  var response = await getResponse(StaticStrings.getPathUnresolvedIssues() + "/" + ch.id.toString()) as http.Response;
+  var jsonString = response.body;
+  print(response.body);
   //DECODE TO JSON
   var jsonMap = json.decode(jsonString);
 

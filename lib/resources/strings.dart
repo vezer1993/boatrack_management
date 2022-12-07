@@ -81,7 +81,7 @@ class StaticStrings{
   //local: localhost:5001
   //azure: boatrackservices.azurewebsites.net
   static String getApiURL (){
-    return "localhost:5001";
+    return "boatrackservices.azurewebsites.net";
   }
 
   static String getTeltonikaApiURL (){
@@ -163,7 +163,11 @@ class StaticStrings{
     return"/Checkouts/list";
   }
 
-  static String getPathIssues(){
+  static String getPathUnresolvedIssues(){
+    return"/Issues/unresolved";
+  }
+
+  static String getPathIssuesList(){
     return"/Issues/list";
   }
 

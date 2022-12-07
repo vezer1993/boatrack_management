@@ -39,7 +39,6 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
 
     return FutureBuilder(
         future: getFutureData(),
@@ -59,7 +58,7 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
             }
 
             ///CALCULATIONS
-            double containerHeight = 290;
+            double containerHeight = (290 * (bookings.length.toDouble())) + (20 * (bookings.length - 1));
             double containerWidth = 1400;
 
             double titleRowHeight = 40;
@@ -74,14 +73,10 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
                 child: Container(
                   height: containerHeight,
                   width: containerWidth,
-                  decoration: BoxDecoration(
-                    color: CustomColors().tableHeaderColor,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      CustomBoxDecorations.containerBoxShadow(),
-                    ],
-                  ),
-                  child: ListView.builder(
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 20,);
+                      },
                       shrinkWrap: true,
                       primary: false,
                       physics: NeverScrollableScrollPhysics(),
@@ -101,225 +96,234 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
                         }
 
                         List<BookingItem> items = b.getPayableAtBaseBookingItems();
-
+                        final _scrollController = ScrollController();
                         if (b != null) {}
 
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: containerWidth,
-                              height: titleRowHeight,
-                              child: Row(
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: CustomColors().tableHeaderColor,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              CustomBoxDecorations.containerBoxShadow(),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  width: containerWidth,
+                                  height: titleRowHeight,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 20),
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              bookings[index].yacht!.name.toString(),
+                                              style: CustomTextStyles.textStyleTitle(
+                                                  context),
+                                            )),
+                                      ),
+                                      PopupMenuButton(
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem(
+                                              value: 'guest_info',
+                                              child: Text('GUEST INFO', style: CustomTextStyles.textStyleTableColumn(context),),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'arrive',
+                                              child: Text('GUESTS ARRIVED', style: CustomTextStyles.textStyleTableColumn(context),),
+                                            ),
+                                          ];
+                                        },
+                                        onSelected: (String value) async{
+                                          if(value == "arrive"){
+                                            bool success = await setGuestsArrived(this.context, b.id.toString());
+                                            if(success){
+                                              setState(() {
+                                                rebuildAllChildren(context);
+                                              });
+                                            }
+                                          }else if (value == "guest_info"){
+                                            bool? success = await showDialog<bool>(context: context, builder: (context) => DialogEditGuestInfo(booking: b));
+                                            dataLoaded = false;
+                                            setState(() {
+                                              rebuildAllChildren(context);
+                                            });
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  )
+                              ),
+                              SizedBox(
+                                width: containerWidth,
+                                height: dateRowHeight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 40),
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        bFrom + "  --->  " + bTo,
+                                        style: CustomTextStyles.textStyleTitle(
+                                            context),
+                                      )),
+                                ),
+                              ),
+                              SizedBox(
+                                height: rowPadding,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          bookings[index].yacht!.name.toString(),
-                                          style: CustomTextStyles.textStyleTitle(
-                                              context),
-                                        )),
+                                  /// SECTION 1 (INFORMATION)
+                                  Container(
+                                    height: columnHeight,
+                                    width: columnWidth / 3,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                            height: 15,
+                                            child: Text(
+                                              "INFORMATION",
+                                              style: CustomTextStyles
+                                                  .textStyleTableHeader(context),
+                                            )),
+                                        SizedBox(
+                                            width: columnWidth / 3,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  width: (columnWidth / 3) - 300,
+                                                  height: 2,
+                                                  color:
+                                                  CustomColors().primaryColor,
+                                                ))),
+                                        const SizedBox(height: 10,),
+                                        SizedBox(
+                                          width: columnWidth / 3,
+                                          height: 173,
+                                          child: Scrollbar(
+                                            isAlwaysShown: true,
+                                            controller: _scrollController,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.vertical,
+                                              controller: _scrollController,
+                                              child: Column(
+                                                children: [
+                                                  for(int i = 0; i < items.length; i++)
+                                                    BookingItemWidget(item: items[i], row: i)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  PopupMenuButton(
-                                    itemBuilder: (context) {
-                                      return [
-                                        PopupMenuItem(
-                                          value: 'guest_info',
-                                          child: Text('GUEST INFO', style: CustomTextStyles.textStyleTableColumn(context),),
-                                        ),
-                                        PopupMenuItem(
-                                          value: 'arrive',
-                                          child: Text('GUESTS ARRIVED', style: CustomTextStyles.textStyleTableColumn(context),),
-                                        ),
-                                      ];
-                                    },
-                                    onSelected: (String value) async{
-                                      if(value == "arrive"){
-                                        bool success = await setGuestsArrived(this.context, b.id.toString());
-                                        if(success){
-                                          setState(() {
-                                            rebuildAllChildren(context);
-                                          });
-                                        }
-                                      }else if (value == "guest_info"){
-                                        bool? success = await showDialog<bool>(context: context, builder: (context) => DialogEditGuestInfo(booking: b));
-                                        dataLoaded = false;
-                                        setState(() {
-                                          rebuildAllChildren(context);
-                                        });
-                                      }
-                                    },
+
+                                  ///DIVIDER
+                                  SizedBox(
+                                    height: columnHeight,
+                                    width: 2,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        height: columnHeight - 40,
+                                        width: 2,
+                                        color: CustomColors().primaryColor,
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///SECTION 2 (ITEMS)
+                                  Container(
+                                    height: columnHeight,
+                                    width: columnWidth / 3,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                            height: 15,
+                                            child: Text(
+                                              "PREPARATION",
+                                              style: CustomTextStyles
+                                                  .textStyleTableHeader(context),
+                                            )),
+                                        SizedBox(
+                                            width: columnWidth / 3,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  width: (columnWidth / 3) - 300,
+                                                  height: 2,
+                                                  color:
+                                                  CustomColors().primaryColor,
+                                                ))),
+                                        const SizedBox(height: 10,),
+                                        BookingPreparationWidget(bookingID: b.id.toString(), widgetWidth: columnWidth / 3, yacht: b.yacht!,)
+                                      ],
+                                    ),
+                                  ),
+
+                                  ///DIVIDER
+                                  SizedBox(
+                                    height: columnHeight,
+                                    width: 2,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        height: columnHeight - 40,
+                                        width: 2,
+                                        color: CustomColors().primaryColor,
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///SECTION 3 (GUEST INFO)
+                                  Container(
+                                    height: columnHeight,
+                                    width: columnWidth / 3,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                            height: 15,
+                                            child: Text(
+                                              "GUEST INFO",
+                                              style: CustomTextStyles
+                                                  .textStyleTableHeader(context),
+                                            )),
+                                        SizedBox(
+                                            width: columnWidth / 3,
+                                            child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  width: (columnWidth / 3) - 300,
+                                                  height: 2,
+                                                  color:
+                                                  CustomColors().primaryColor,
+                                                ))),
+                                        const SizedBox(height: 10,),
+                                        BookingGuestInfoWidget(booking: b,)
+                                      ],
+                                    ),
                                   ),
                                 ],
                               )
-                            ),
-                            SizedBox(
-                              width: containerWidth,
-                              height: dateRowHeight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 40),
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      bFrom + "  --->  " + bTo,
-                                      style: CustomTextStyles.textStyleTitle(
-                                          context),
-                                    )),
-                              ),
-                            ),
-                            SizedBox(
-                              height: rowPadding,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /// SECTION 1 (INFORMATION)
-                                Container(
-                                  height: columnHeight,
-                                  width: columnWidth / 3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: 15,
-                                          child: Text(
-                                            "INFORMATION",
-                                            style: CustomTextStyles
-                                                .textStyleTableHeader(context),
-                                          )),
-                                      SizedBox(
-                                          width: columnWidth / 3,
-                                          child: Align(
-                                              alignment: Alignment.center,
-                                              child: Container(
-                                                width: (columnWidth / 3) - 300,
-                                                height: 2,
-                                                color:
-                                                    CustomColors().primaryColor,
-                                              ))),
-                                      const SizedBox(height: 10,),
-                                      SizedBox(
-                                        width: columnWidth / 3,
-                                        height: 173,
-                                        child: Scrollbar(
-                                          isAlwaysShown: true,
-                                          controller: _scrollController,
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.vertical,
-                                            controller: _scrollController,
-                                            child: Column(
-                                              children: [
-                                                for(int i = 0; i < items.length; i++)
-                                                  BookingItemWidget(item: items[i], row: i)
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-
-                                ///DIVIDER
-                                SizedBox(
-                                  height: columnHeight,
-                                  width: 2,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      height: columnHeight - 40,
-                                      width: 2,
-                                      color: CustomColors().primaryColor,
-                                    ),
-                                  ),
-                                ),
-
-                                ///SECTION 2 (ITEMS)
-                                Container(
-                                  height: columnHeight,
-                                  width: columnWidth / 3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: 15,
-                                          child: Text(
-                                            "PREPARATION",
-                                            style: CustomTextStyles
-                                                .textStyleTableHeader(context),
-                                          )),
-                                      SizedBox(
-                                          width: columnWidth / 3,
-                                          child: Align(
-                                              alignment: Alignment.center,
-                                              child: Container(
-                                                width: (columnWidth / 3) - 300,
-                                                height: 2,
-                                                color:
-                                                CustomColors().primaryColor,
-                                              ))),
-                                      const SizedBox(height: 10,),
-                                      BookingPreparationWidget(bookingID: b.id.toString(), widgetWidth: columnWidth / 3, yacht: b.yacht!,)
-                                    ],
-                                  ),
-                                ),
-
-                                ///DIVIDER
-                                SizedBox(
-                                  height: columnHeight,
-                                  width: 2,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      height: columnHeight - 40,
-                                      width: 2,
-                                      color: CustomColors().primaryColor,
-                                    ),
-                                  ),
-                                ),
-
-                                ///SECTION 3 (GUEST INFO)
-                                Container(
-                                  height: columnHeight,
-                                  width: columnWidth / 3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: 15,
-                                          child: Text(
-                                            "GUEST INFO",
-                                            style: CustomTextStyles
-                                                .textStyleTableHeader(context),
-                                          )),
-                                      SizedBox(
-                                          width: columnWidth / 3,
-                                          child: Align(
-                                              alignment: Alignment.center,
-                                              child: Container(
-                                                width: (columnWidth / 3) - 300,
-                                                height: 2,
-                                                color:
-                                                CustomColors().primaryColor,
-                                              ))),
-                                      const SizedBox(height: 10,),
-                                      BookingGuestInfoWidget(booking: b,)
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
+                            ],
+                          ),
                         );
                       }),
                 ),

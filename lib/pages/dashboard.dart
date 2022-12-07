@@ -1,8 +1,10 @@
 import 'package:boatrack_management/models/yacht.dart';
 import 'package:boatrack_management/resources/strings.dart';
+import 'package:boatrack_management/resources/styles/text_styles.dart';
 import 'package:boatrack_management/services/yachts_api.dart';
 import 'package:boatrack_management/widgets/dashboard/dashboard_calendar_widget.dart';
 import 'package:boatrack_management/widgets/dashboard/dashboard_current_booking_widget.dart';
+import 'package:boatrack_management/widgets/dashboard/dashboard_unresolved_issue_list_widget.dart';
 import 'package:boatrack_management/widgets/user_interface/header.dart';
 import 'package:flutter/material.dart';
 import '../resources/separators.dart';
@@ -59,7 +61,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Separators.dashboardVerticalSeparator(),
-                      DoubleWidgetContainer(title1:  StaticStrings.dashboardYachtListTitle, widget1: DashboardYachtListWidget(yachts: futureData, notifyParent: notifyParent,),title2: "ACTIVE TASKS", widget2: const EmployeeTaskListWidget(),),
+                      DoubleWidgetContainer(title1:  StaticStrings.dashboardYachtListTitle, widget1: DashboardYachtListWidget(yachts: futureData, notifyParent: notifyParent,),title2: "", widget2: Column(children: [Text("ACTIVE TASKS", style: CustomTextStyles.textStyleTitle(context),), const SizedBox(height: 10,),const EmployeeTaskListWidget(), const SizedBox(height: 20,),Text("UNRESOLVED ISSUES", style: CustomTextStyles.textStyleTitle(context),), const SizedBox(height: 10,), const DashboardUnresolvedIssueList()],),),
                       Separators.dashboardVerticalSeparator(),
                       //HalfSizeContainer(parentSize: mySize)
                     ],
