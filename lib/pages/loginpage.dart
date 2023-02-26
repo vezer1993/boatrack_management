@@ -118,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future login () async {
     var response = await loginToWeb(usernameTextController.text, passwordTextController.text) as http.Response;
-    
-    print(response.body);
+
     if(response.statusCode.toString().startsWith("2") ){
       Get.offNamed('/dashboard');
     }else{
@@ -131,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
         }
           else{
           errorMessageController.text = response.body;
-          print(response.statusCode.toString());
         }
 
         authenticating = false;

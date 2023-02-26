@@ -138,7 +138,6 @@ class _DashboardCalendarWidgetState extends State<DashboardCalendarWidget> {
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           //TODO: open yacht page
-                                          print('Terms of Service"');
                                         }),
                                 ),
                               ),

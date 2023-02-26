@@ -637,7 +637,6 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                             result.files[0].extension.toString(),
                             result.files[0].bytes!);
                         setState(() {
-                          print(path);
                           newRowImages.add(path);
                         });
                       }

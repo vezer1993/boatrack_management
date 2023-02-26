@@ -12,9 +12,10 @@ class YachtCleaningListWidget extends StatefulWidget {
   final Yacht yacht;
   final double containerHeight;
   final Function? callback;
+  final int itemsPerPage;
 
   const YachtCleaningListWidget(
-      {Key? key, required this.yacht, required this.containerHeight, this.callback})
+      {Key? key, required this.yacht, required this.containerHeight, this.callback, required this.itemsPerPage})
       : super(key: key);
 
   @override
@@ -28,7 +29,6 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
   double columnWidth = 130;
   double columnHeight = 37;
 
-  int itemsPerPage = 4;
   int page = 1;
 
   bool dataLoaded = false;
@@ -79,7 +79,7 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                             shrinkWrap: true,
                             primary: false,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: itemsPerPage + 1,
+                            itemCount: widget.itemsPerPage + 1,
                             itemBuilder: (BuildContext context, int index) {
                               if (index == 0) {
                                 // return the header
@@ -145,9 +145,9 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                               }
                               index -= 1;
 
-                              if ((index + ((page - 1) * itemsPerPage)) <
+                              if ((index + ((page - 1) * widget.itemsPerPage)) <
                                   data.length) {
-                                int i = index + ((page - 1) * itemsPerPage);
+                                int i = index + ((page - 1) * widget.itemsPerPage);
 
                                 Cleaning b = data[i];
 
@@ -167,7 +167,7 @@ class _YachtCleaningListWidgetState extends State<YachtCleaningListWidget> {
                                     height: (widget.containerHeight -
                                         columnHeight -
                                         pageSelectionHeight) /
-                                        itemsPerPage,
+                                        widget.itemsPerPage,
                                     decoration:
                                     CustomBoxDecorations.topAndBottomBorder(),
                                     child: Row(

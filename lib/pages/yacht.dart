@@ -38,7 +38,7 @@ class _YachtPageState extends State<YachtPage> {
               childWidget: YachtPresentationWidget(yacht: widget.yacht),
             ),
             Separators.dashboardVerticalSeparator(),
-            MultiWidgetContainer(topLeftWidget: const YachtDataUsedWidget(), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 400), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: YachtEngineTemperature(), containerHeight: 400,)
+            MultiWidgetContainer(topLeftWidget: const YachtDataUsedWidget(), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 600), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: YachtEngineTemperature(), containerHeight: 600,)
           ],
         ),
       ),

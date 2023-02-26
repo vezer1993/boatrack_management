@@ -21,7 +21,6 @@ class _BookingGuestInfoWidgetState extends State<BookingGuestInfoWidget> {
   Future getGuestInfo() async {
     if (!dataLoaded) {
       if(widget.booking.guestId != null){
-        print(widget.booking.guestId);
         futureData = await getGuest(widget.booking.guestId.toString());
       }
     }

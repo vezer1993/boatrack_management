@@ -15,11 +15,12 @@ import 'dart:html' as html;
 class YachtIssueListWidget extends StatefulWidget {
   final Yacht yacht;
   final double containerHeight;
+  final int itemsPerPage;
 
   const YachtIssueListWidget(
       {Key? key,
         required this.yacht,
-        required this.containerHeight})
+        required this.containerHeight, required this.itemsPerPage})
       : super(key: key);
 
   @override
@@ -32,7 +33,6 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
   double columnWidth = 130;
   double columnHeight = 37;
 
-  int itemsPerPage = 4;
   int page = 1;
 
   bool dataLoaded = false;
@@ -83,7 +83,7 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
                             shrinkWrap: true,
                             primary: false,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: itemsPerPage + 1,
+                            itemCount: widget.itemsPerPage + 1,
                             itemBuilder: (BuildContext context, int index) {
                               if (index == 0) {
                                 // return the header
@@ -161,9 +161,9 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
                               }
                               index -= 1;
 
-                              if ((index + ((page - 1) * itemsPerPage)) <
+                              if ((index + ((page - 1) * widget.itemsPerPage)) <
                                   issues.length) {
-                                int i = index + ((page - 1) * itemsPerPage);
+                                int i = index + ((page - 1) * widget.itemsPerPage);
 
                                 IssueItem b = issues[i];
 
@@ -188,7 +188,7 @@ class _YachtIssueListWidgetState extends State<YachtIssueListWidget> {
                                     height: (widget.containerHeight -
                                         columnHeight -
                                         pageSelectionHeight) /
-                                        itemsPerPage,
+                                        widget.itemsPerPage,
                                     decoration:
                                     CustomBoxDecorations.topAndBottomBorder(),
                                     child: Row(

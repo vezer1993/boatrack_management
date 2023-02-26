@@ -28,7 +28,6 @@ Future putCheckModel(CheckModel model, BuildContext context) async {
   if(response.statusCode.toString().startsWith("2")){
     return true;
   }else{
-    print(response.body);
     return false;
   }
 }
@@ -39,7 +38,6 @@ Future deleteCheckModel(CheckModel model, BuildContext context) async {
   if(response.statusCode.toString().startsWith("2")){
     return true;
   }else{
-    print(response.body);
     return false;
   }
 }
@@ -49,7 +47,6 @@ Future getCheckModels() async {
   http.Response response = await getResponse(StaticStrings.getPathModels());
 
   var jsonMap = json.decode(response.body);
-  print(response.body);
 
   List<CheckModel> models = [];
 

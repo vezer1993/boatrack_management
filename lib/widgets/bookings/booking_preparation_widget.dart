@@ -26,7 +26,6 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
   Future getBookingPrep() async {
     if (!dataLoaded) {
       futureData = await getBookingPreparationStatus(widget.bookingID.toString());
-      print("FRESH DATA");
     }
     return futureData;
   }

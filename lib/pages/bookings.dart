@@ -33,7 +33,7 @@ class _BookingsPageState extends State<BookingsPage> {
             const HeaderWidget(previousPage: '',),
             Separators.dashboardVerticalSeparator(),
             FullWidthContainer(
-              title: "UPCOMING BOOKINGS",
+              title: getPresentationTitle(),
               childWidget: BookingPresentationWidget(bookingStartDate: nextSaturday,),
             ),
             Separators.dashboardVerticalSeparator(),
@@ -41,5 +41,11 @@ class _BookingsPageState extends State<BookingsPage> {
         ),
       ),
     );
+  }
+
+  String getPresentationTitle(){
+    DateTime nextSaturday = CalendarCalculations().getNextSaturdayForDate(DateTime.now());
+    DateTime nextNextSaturday = DateTime(nextSaturday.year, nextSaturday.month, nextSaturday.day + 7);
+    return "BOOKINGS    " + Conversion.convertISOTimeToStandardFormat(nextSaturday.toIso8601String()) + " - " + Conversion.convertISOTimeToStandardFormat(nextNextSaturday.toIso8601String());
   }
 }

@@ -209,7 +209,6 @@ class _EmployeeTaskWidgetState extends State<EmployeeTaskWidget> {
               width: 125,
               child: ElevatedButton(
                 onPressed: buttonEnabled() ? () async {
-                  print("HI");
                   for(int i = 0; i < selectedTypes.length; i++){
                     if(selectedTypes[i]){
                       for(int x = 0; x < yachtsSelected.length; x++){

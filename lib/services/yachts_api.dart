@@ -3,6 +3,8 @@ import 'package:boatrack_management/models/check_in_out.dart';
 import 'package:boatrack_management/models/cleaning.dart';
 import 'package:boatrack_management/models/issues.dart';
 import 'package:boatrack_management/models/teltonika/TeltonikaDataJSON.dart';
+import 'package:boatrack_management/models/teltonika/TeltonikaGPS.dart';
+import 'package:boatrack_management/models/teltonika/TeltonikaGPSJSON.dart';
 import 'package:boatrack_management/models/yacht_location.dart';
 import 'package:boatrack_management/services/charter_api.dart';
 import 'package:boatrack_management/services/web_services.dart';
@@ -15,6 +17,7 @@ import '../models/charter.dart';
 import '../models/teltonika/TeltonikaData.dart';
 import '../models/yacht.dart';
 import '../resources/strings.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 /// YACHT LIST FOR CHARTER
@@ -154,7 +157,6 @@ Future getUnresolvedIssues() async {
   Charter ch = await getCharter();
   var response = await getResponse(StaticStrings.getPathUnresolvedIssues() + "/" + ch.id.toString()) as http.Response;
   var jsonString = response.body;
-  print(response.body);
   //DECODE TO JSON
   var jsonMap = json.decode(jsonString);
 
@@ -219,6 +221,26 @@ Future getYachtLocationList(List<Yacht> yachts) async {
     }
 
     return result;
+  }else{
+    return [];
+  }
+
+}
+
+Future getYachtRoute(Yacht yacht, DateTime start, DateTime end) async {
+
+  String path = "/devices/501464/locations/history";
+  Map<String, String> param = {};
+  param["start_date"] = "2023-02-20 00:00:00";
+  param["end_date"] = "2023-02-25 00:00:00";
+
+  Charter c = await  getCharter();
+  var response = await getTeltonikaGPSRoute(path, param, c.teltonikaToken.toString()) as http.Response;
+  if(response.statusCode.toString().startsWith("2")){
+    TeltonikaGPSJSON model = TeltonikaGPSJSON.fromJson(json.decode(response.body));
+    List<TeltonikaGPS> data = model.data!;
+
+    return data;
   }else{
     return [];
   }

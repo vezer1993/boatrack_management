@@ -381,7 +381,6 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
 
     bool response = await postNewAccount(acc, context);
     if(response){
-      print("hurray");
       updateCharter();
       setState(() {
         inputEnabled = !inputEnabled;
@@ -392,7 +391,6 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
         charter.accounts!.add(acc);
       });
     }else{
-      print("ohno");
     }
   }
 }

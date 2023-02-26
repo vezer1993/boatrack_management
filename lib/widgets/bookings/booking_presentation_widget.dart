@@ -58,7 +58,10 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
             }
 
             ///CALCULATIONS
-            double containerHeight = (290 * (bookings.length.toDouble())) + (20 * (bookings.length - 1));
+            double containerHeight = 300;
+            if(bookings.length > 0){
+              containerHeight = (290 * (bookings.length.toDouble())) + (20 * (bookings.length - 1));
+            }
             double containerWidth = 1400;
 
             double titleRowHeight = 40;

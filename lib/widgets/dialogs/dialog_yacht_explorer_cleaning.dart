@@ -360,7 +360,7 @@ class _DialogYachtExplorerCleaningState
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 5),
-                            child: YachtCleaningListWidget(yacht: widget.yacht, containerHeight: 300, callback: swapExploringItem,),
+                            child: YachtCleaningListWidget(yacht: widget.yacht, containerHeight: 300, callback: swapExploringItem, itemsPerPage: 4,),
                           ),
                         ],
                       ),

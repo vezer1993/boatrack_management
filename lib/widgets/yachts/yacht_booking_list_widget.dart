@@ -24,7 +24,7 @@ class _YachtBookingListWidgetState extends State<YachtBookingListWidget> {
   double columnWidth = 130;
   double columnHeight = 37;
 
-  int itemsPerPage = 4;
+  int itemsPerPage = 6;
   int page = 1;
 
   @override
@@ -41,7 +41,7 @@ class _YachtBookingListWidgetState extends State<YachtBookingListWidget> {
       );
     }
 
-    int pageCount = (widget.bookings!.length / 4).ceil();
+    int pageCount = (widget.bookings!.length / itemsPerPage).ceil();
 
     return SizedBox(
         height: widget.containerHeight,

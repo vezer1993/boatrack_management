@@ -5,6 +5,7 @@ import 'package:boatrack_management/widgets/yachts/yacht_booking_list_widget.dar
 import 'package:boatrack_management/widgets/yachts/yacht_check_in_out_list_widget.dart';
 import 'package:boatrack_management/widgets/yachts/yacht_cleaning_list_widget.dart';
 import 'package:boatrack_management/widgets/yachts/yacht_issues_list_widget.dart';
+import 'package:boatrack_management/widgets/yachts/yacht_route_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/cleaning.dart';
@@ -34,7 +35,7 @@ class _YachtInformationWidgetState extends State<YachtInformationWidget> {
 
     double containerHeight = widget.containerHeight - (2 * StaticValues.standardContainerPadding) - StaticValues.halfContainerTableHeaderHeight - StaticValues.itemVerticalSeparator;
 
-    List<Widget> selectedWidget = [YachtBookingListWidget(bookings: widget.yacht.getBookingList(), containerHeight: containerHeight,), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: true), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: false), YachtCleaningListWidget(yacht: widget.yacht, containerHeight: containerHeight, callback: callback,), YachtIssueListWidget(yacht: widget.yacht, containerHeight: containerHeight), Text("HELLO 6")];
+    List<Widget> selectedWidget = [YachtBookingListWidget(bookings: widget.yacht.getBookingList(), containerHeight: containerHeight,), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: true, itemsPerPage: 6,), YachtCheckInOutListWidget(yacht: widget.yacht, containerHeight: containerHeight, checkIn: false, itemsPerPage: 6,), YachtCleaningListWidget(yacht: widget.yacht, containerHeight: containerHeight, callback: callback, itemsPerPage: 6,), YachtIssueListWidget(yacht: widget.yacht, containerHeight: containerHeight, itemsPerPage: 6,), WidgetYachtRoute(yacht: widget.yacht,)];
 
     return Column(
       children: [
