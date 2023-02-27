@@ -6,6 +6,7 @@ class EmployeeTask {
   int? accountId;
   bool? resolved;
   int? charterId;
+  String? note;
   String? timeCreated;
   String? timeResolved;
 
@@ -28,6 +29,7 @@ class EmployeeTask {
     accountId = json['accountId'];
     resolved = json['resolved'];
     charterId = json['charterId'];
+    note = json['note'];
     timeCreated = json['timeCreated'];
     timeResolved = json['timeResolved'];
   }
@@ -39,6 +41,7 @@ class EmployeeTask {
     data['typeId'] = this.typeId;
     data['accountId'] = this.accountId;
     data['charterId'] = this.charterId;
+    data['note'] = this.note;
     return data;
   }
 }

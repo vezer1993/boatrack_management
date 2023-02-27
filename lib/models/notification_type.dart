@@ -5,6 +5,7 @@ class NotificationEnum {
   static String checkout = "checkout";
   static String issue = "issue";
   static String preparation = "preparation";
+  static String service = "service";
 
 
   static String getTaskMessage(String type, String yachtName){

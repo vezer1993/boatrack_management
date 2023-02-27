@@ -16,8 +16,16 @@ class FullWidthContainer extends StatefulWidget {
 }
 
 class _FullWidthContainerState extends State<FullWidthContainer> {
+
+  bool titleVisible = true;
+
   @override
   Widget build(BuildContext context) {
+
+    if(widget.title == ""){
+      titleVisible = false;
+    }
+
     return Container(
       width: double.infinity,
       decoration: CustomBoxDecorations.standardBoxDecoration(),
@@ -26,7 +34,7 @@ class _FullWidthContainerState extends State<FullWidthContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.title, style: CustomTextStyles.textStyleTitle(context),),
+            Visibility(visible: titleVisible, child: Text(widget.title, style: CustomTextStyles.textStyleTitle(context),)),
             CustomTextStyles.containerVerticalTextSeparator(),
             widget.childWidget,
           ],

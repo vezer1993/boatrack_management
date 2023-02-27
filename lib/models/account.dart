@@ -4,6 +4,7 @@ class Accounts {
   String? name;
   String? username;
   String? password;
+  String? role;
   bool? isAdmin;
   String? pin;
   String? charter;
@@ -26,6 +27,7 @@ class Accounts {
     username = json['username'];
     password = json['password'];
     isAdmin = json['isAdmin'];
+    role = json['charter_role'];
     pin = json['pin'];
     charter = json['charter'];
   }
@@ -38,6 +40,7 @@ class Accounts {
     data['password'] = this.password;
     data['isAdmin'] = this.isAdmin;
     data['pin'] = this.pin;
+    data['charter_role'] = this.role;
     data['charter'] = this.charter;
     data['cleanings'] = this.cleanings;
     return data;

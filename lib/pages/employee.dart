@@ -1,3 +1,4 @@
+import 'package:boatrack_management/widgets/employees/employee_header_menu.dart';
 import 'package:boatrack_management/widgets/employees/employee_list.dart';
 import 'package:boatrack_management/widgets/employees/employee_presentation.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,9 @@ class EmployeePage extends StatefulWidget {
 }
 
 class _EmployeePageState extends State<EmployeePage> {
+
+  Widget currentEmployeeWidget = Center();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -26,13 +30,16 @@ class _EmployeePageState extends State<EmployeePage> {
           children: [
             const HeaderWidget(previousPage: '',),
             Separators.dashboardVerticalSeparator(),
-            FullWidthContainer(
+            EmployeeHeader(notifyParent: changeEmployeeWidget),
+            Separators.dashboardVerticalSeparator(),
+            currentEmployeeWidget
+            /*FullWidthContainer(
               title: "EMPLOYEES",
               childWidget: EmployeeListWidget(selectedEmployee: widget.selectedEmployee, notifyParent: selectEmployee,),
             ),
             Separators.dashboardVerticalSeparator(),
             EmployeePresentationWidget(selectedEmployee: widget.selectedEmployee),
-            Separators.dashboardVerticalSeparator(),
+            Separators.dashboardVerticalSeparator(),*/
           ],
         ),
       ),
@@ -42,6 +49,12 @@ class _EmployeePageState extends State<EmployeePage> {
   void selectEmployee(int id){
     setState(() {
       widget.selectedEmployee = id;
+    });
+  }
+
+  void changeEmployeeWidget(Widget w){
+    setState(() {
+      currentEmployeeWidget = w;
     });
   }
 }
