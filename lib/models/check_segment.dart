@@ -7,8 +7,8 @@ class CheckSegment{
   String? name;
   String? description;
   String? help;
+  String? parentGroup;
   List<dynamic> images = [];
-  bool? outside;
 
   TextEditingController? nameEditingController;
   TextEditingController? descriptionEditingController;
@@ -21,10 +21,10 @@ class CheckSegment{
     data['name'] = name;
     data['description'] = description;
     data['help'] = help;
+    data['parentGroup'] = parentGroup;
     if(images.isNotEmpty){
       data['images'] = jsonEncode(images);
     }
-    data['outside'] = outside;
     return data;
   }
 }

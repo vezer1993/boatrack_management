@@ -52,10 +52,10 @@ class CheckModel {
         seg.name = object["name"];
         seg.description = object["description"];
         seg.help = object["help"];
+        seg.parentGroup = object["parentGroup"];
         if(object["images"] != null){
           seg.images = jsonDecode(object["images"]);
         }
-        seg.outside = object["outside"];
 
         segments.add(seg);
       }

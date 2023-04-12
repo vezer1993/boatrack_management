@@ -12,6 +12,7 @@ import '../../resources/strings.dart';
 import '../../resources/styles/button_styles.dart';
 import '../../resources/styles/text_styles.dart';
 import '../../services/azure.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class SettingsCheckModelWidget extends StatefulWidget {
   const SettingsCheckModelWidget({Key? key}) : super(key: key);
@@ -27,6 +28,13 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
   CheckModel selectedModel = CheckModel();
   List<CheckSegment> segments = [];
 
+  List<CheckSegment> segmentsDeck = [];
+  List<CheckSegment> segmentsSaloonCabin = [];
+  List<CheckSegment> segmentsLocker = [];
+  List<CheckSegment> segmentsKitchen = [];
+  List<CheckSegment> segmentsEngine = [];
+  List<CheckSegment> segmentsVarious = [];
+
   double tableColumnWidth = 150;
   double tableColumnHeight = StaticValues.halfContainerTableColumnHeight;
   double tableHeaderHeight = 40;
@@ -39,6 +47,18 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
   TextEditingController newRowHelp = TextEditingController();
   List<String> newRowImages = [];
   bool newRowOutside = false;
+  // Initial Selected Value
+  String parentGroup = 'DECK';
+
+  // List of items in our dropdown menu
+  var parentGroupItems = [
+    'DECK',
+    'SALOON + CABINS',
+    'LOCKERS',
+    'KITCHEN',
+    'ENGINE + EL. INSTAL.',
+    'VARIOUS'
+  ];
 
   ///EXISTING MODELS
   late List<CheckModel> futureData;
@@ -59,7 +79,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double tableWidth = (tableColumnWidth * 8) + 100;
+    double tableWidth = (tableColumnWidth * 9) + 100;
     return Column(
       children: [
         FullWidthContainer(
@@ -137,6 +157,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                                               setState(() {
                                                 selectedModel = futureData[index];
                                                 segments = selectedModel.getModel();
+                                                setAllSegments();
                                                 modelNameEditingController.text = selectedModel.name.toString();
                                                 isEditing = true;
                                               });
@@ -184,6 +205,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                                                 selectedModel = futureData[index];
                                                 selectedModel.id = null;
                                                 segments = selectedModel.getModel();
+                                                setAllSegments();
                                                 modelNameEditingController.text = selectedModel.name.toString();
                                                 isEditing = true;
                                               });
@@ -272,9 +294,72 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                           ),
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 30,
                         ),
-                        getListView(),
+                        Text("DECK", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsDeck),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text("SALOON & CABIN", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsSaloonCabin),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text("LOCKERS", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsLocker),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text("KITCHEN", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsKitchen),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text("ENGINE & EL. INSTAL.", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsEngine),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text("VARIOUS", style: CustomTextStyles.textStyleTitle(context)),
+                        const SizedBox(height: 2,),
+                        getListView(segmentsVarious),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                          child: Container(width: double.infinity, height: 2, color: CustomColors().primaryColor,),
+                        ),
+
                         const SizedBox(
                           height: 30,
                         ),
@@ -329,8 +414,9 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
     );
   }
 
-  Widget getListView() {
-    if (segments.isEmpty) {
+  Widget getListView(List<CheckSegment> segmentParts) {
+
+    if (segmentParts.isEmpty) {
       return const SizedBox();
     } else {
       ///LIST VIEW OF SEGMENTS
@@ -338,18 +424,18 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
           shrinkWrap: true,
           primary: false,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: segments.length,
+          itemCount: segmentParts.length,
           itemBuilder: (BuildContext context, int index) {
             TextEditingController n =
-                TextEditingController(text: segments[index].name);
+                TextEditingController(text: segmentParts[index].name);
             TextEditingController d =
-                TextEditingController(text: segments[index].description);
+                TextEditingController(text: segmentParts[index].description);
             TextEditingController h =
-                TextEditingController(text: segments[index].help);
+                TextEditingController(text: segmentParts[index].help);
 
-            segments[index].nameEditingController = n;
-            segments[index].descriptionEditingController = d;
-            segments[index].helpEditingController = h;
+            segmentParts[index].nameEditingController = n;
+            segmentParts[index].descriptionEditingController = d;
+            segmentParts[index].helpEditingController = h;
 
             return Center(
               child: SingleChildScrollView(
@@ -384,7 +470,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                                   constraints: const BoxConstraints(),
                                 ),
                                 IconButton(
-                                  onPressed: index == (segments.length - 1)
+                                  onPressed: index == (segmentParts.length - 1)
                                       ? null
                                       : () {
                                           setState(() {
@@ -413,7 +499,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                         child: Center(
                           child: TextField(
                             controller: n,
-                            enabled: segments[index].edit,
+                            enabled: segmentParts[index].edit,
                             style: CustomTextStyles.textStyleTableColumnNoBold(
                                 context),
                             maxLines: 1,
@@ -431,7 +517,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                         child: Center(
                           child: TextField(
                             controller: d,
-                            enabled: segments[index].edit,
+                            enabled: segmentParts[index].edit,
                             style: CustomTextStyles.textStyleTableColumnNoBold(
                                 context),
                             maxLines: 1,
@@ -449,7 +535,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                         child: Center(
                           child: TextField(
                             controller: h,
-                            enabled: segments[index].edit,
+                            enabled: segmentParts[index].edit,
                             style: CustomTextStyles.textStyleTableColumnNoBold(
                                 context),
                             maxLines: 1,
@@ -468,9 +554,9 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                         child: Center(
                             child: Row(
                           children: [
-                            getRowImages(index),
+                            getRowImages(segmentParts[index], 0),
                             IconButton(
-                              onPressed: segments[index].edit
+                              onPressed: segmentParts[index].edit
                                   ? () async {
                                       FilePickerResult? result =
                                           await FilePicker.platform.pickFiles(
@@ -489,7 +575,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                                                 .toString(),
                                             result.files[0].bytes!);
                                         setState(() {
-                                          segments[index].images.add(path);
+                                          segmentParts[index].images.add(path);
                                         });
                                       }
                                     }
@@ -504,41 +590,24 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                       SizedBox(
                         width: tableColumnWidth * 0.5,
                         child: Center(
-                          child: Checkbox(
-                            checkColor: CustomColors().navigationTextColor,
-                            activeColor: CustomColors().primaryColor,
-                            value: segments[index].outside,
-                            onChanged: (value) {
-                              if (segments[index].edit) {
-                                setState(() {
-                                  segments[index].outside = value!;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: tableColumnWidth * 0.5,
-                        child: Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              if (segments[index].edit) {
-                                segments[index].name =
-                                    segments[index].nameEditingController!.text;
-                                segments[index].description = segments[index]
+                              if (segmentParts[index].edit) {
+                                segmentParts[index].name =
+                                    segmentParts[index].nameEditingController!.text;
+                                segmentParts[index].description = segmentParts[index]
                                     .descriptionEditingController!
                                     .text;
-                                segments[index].help =
-                                    segments[index].helpEditingController!.text;
+                                segmentParts[index].help =
+                                    segmentParts[index].helpEditingController!.text;
                               }
                               setState(() {
-                                segments[index].edit = !segments[index].edit;
+                                segmentParts[index].edit = !segmentParts[index].edit;
                               });
                             },
                             style: CustomButtonStyles.getStandardButtonStyle(),
                             child: Text(
-                              segments[index].edit ? "SAVE" : "EDIT",
+                              segmentParts[index].edit ? "SAVE" : "EDIT",
                               style:
                                   CustomTextStyles.getButtonTextStyle(context),
                             ),
@@ -622,7 +691,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
               child: Center(
                   child: Row(
                 children: [
-                  getRowImages(-1),
+                  getRowImages(null, -1),
                   IconButton(
                     onPressed: () async {
                       FilePickerResult? result =
@@ -649,18 +718,35 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
               )),
             ),
             SizedBox(
-              width: tableColumnWidth * 0.5,
-              child: Center(
-                child: Checkbox(
-                  checkColor: CustomColors().navigationTextColor,
-                  activeColor: CustomColors().primaryColor,
-                  value: newRowOutside,
-                  onChanged: (value) {
-                    setState(() {
-                      newRowOutside = value!;
-                    });
-                  },
+              width: tableColumnWidth * 2,
+              child: DropdownButton2(
+                hint: Text(
+                  'Select Group',
+                  style: CustomTextStyles.textStyleTableColumn(context),
                 ),
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: CustomColors().websiteBackgroundColor,
+                ),
+                items: parentGroupItems
+                    .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item.toString(),
+                    style: CustomTextStyles.textStyleTableColumn(
+                        context),
+                  ),
+                ))
+                    .toList(),
+                value: parentGroup,
+                onChanged: (value) {
+                  setState(() {
+                    parentGroup = value.toString();
+                  });
+                },
+                buttonHeight: 50,
+                buttonWidth: 300,
+                itemHeight: 40,
               ),
             ),
             SizedBox(
@@ -687,7 +773,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
     return Container();
   }
 
-  Widget getRowImages(int i) {
+  Widget getRowImages(CheckSegment? seg, int i) {
     if (i == -1) {
       if (newRowImages.isEmpty) {
         return const SizedBox();
@@ -721,7 +807,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
             });
       }
     } else {
-      if (segments[i].images.isEmpty) {
+      if (seg!.images.isEmpty) {
         return const SizedBox();
       } else {
         return ListView.builder(
@@ -729,7 +815,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
             primary: false,
             scrollDirection: Axis.horizontal,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: segments[i].images.length,
+            itemCount: seg!.images.length,
             itemBuilder: (BuildContext context, int index) {
               String imageText = "#" + (index + 1).toString();
 
@@ -739,7 +825,7 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
                     await showDialog(
                         context: context,
                         builder: (_) => DialogShowImage(
-                            imagePath: segments[i].images[index]));
+                            imagePath: seg!.images[index]));
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5),
@@ -762,9 +848,11 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
     temp.description = newRowDescription.text.toString();
     temp.help = newRowHelp.text.toString();
     temp.images = newRowImages;
-    temp.outside = newRowOutside;
+    temp.parentGroup = parentGroup;
+    print(parentGroup);
 
     segments.add(temp);
+    setAllSegments();
     emptyNewRow();
   }
 
@@ -790,5 +878,32 @@ class _SettingsCheckModelWidgetState extends State<SettingsCheckModelWidget> {
   updateCheckModel() async {
     selectedModel.name = modelNameEditingController.text;
     putCheckModel(selectedModel, context);
+  }
+
+  void setAllSegments() {
+
+    segmentsDeck = [];
+    segmentsSaloonCabin = [];
+    segmentsLocker = [];
+    segmentsKitchen = [];
+    segmentsEngine = [];
+    segmentsVarious = [];
+
+    for(CheckSegment seg in segments){
+      if(seg.parentGroup == "DECK"){
+        segmentsDeck.add(seg);
+      }else if (seg.parentGroup == "SALOON + CABINS"){
+        segmentsSaloonCabin.add(seg);
+      }else if (seg.parentGroup == "LOCKERS"){
+        segmentsLocker.add(seg);
+      }else if (seg.parentGroup == "KITCHEN"){
+        segmentsKitchen.add(seg);
+      }else if (seg.parentGroup == "ENGINE + EL. INSTAL."){
+        segmentsEngine.add(seg);
+      }else if (seg.parentGroup == "VARIOUS"){
+        segmentsVarious.add(seg);
+      }
+
+    }
   }
 }
