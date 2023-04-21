@@ -21,10 +21,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 /// YACHT LIST FOR CHARTER
-Future getYachtList() async {
+Future getYachtList(refresh) async {
 
   var jsonString = "";
-  bool refresh = false;
 
   ///TODO: FOR PRODUCTION REFRESH DATA EVERY X MINUTES
   /// CHECK IF LIST IN SESSION

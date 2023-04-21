@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future getYachtListData() async {
     if (!dataLoaded) {
-      futureData = await getYachtList();
+      futureData = await getYachtList(false);
       dataLoaded = true;
     }
     return futureData;

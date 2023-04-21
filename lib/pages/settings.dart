@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future getYachtListData() async {
     if (!dataLoaded) {
-      futureData = await getYachtList();
+      futureData = await getYachtList(false);
       dataLoaded = true;
     }
     return futureData;

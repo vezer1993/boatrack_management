@@ -53,7 +53,7 @@ class _EmployeeDelegateTaskWidgetState
   Future getEmployeeList() async {
     if (!dataLoaded) {
       futureData = await getUserList();
-      yachts = await getYachtList();
+      yachts = await getYachtList(false);
       dataLoaded = true;
     }
     return futureData;
@@ -292,7 +292,7 @@ class _EmployeeDelegateTaskWidgetState
                 Visibility(
                   visible: selectedYachts.isNotEmpty,
                   child: Container(
-                    width: 900,
+                    width: 500,
                     decoration: CustomBoxDecorations.standardBoxDecoration(),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -405,7 +405,13 @@ class _EmployeeDelegateTaskWidgetState
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 15,),
+                            ],
+                          ),
+                          const SizedBox(height: 20,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
                               InkWell(
                                 onTap: () {
                                   setState(() {

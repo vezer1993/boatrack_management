@@ -30,7 +30,7 @@ class _EmployeeTaskWidgetState extends State<EmployeeTaskWidget> {
 
   Future getFutureData() async {
     if (!dataLoaded) {
-      yachts = await getYachtList();
+      yachts = await getYachtList(false);
       yachtsSelected = [];
       for(Yacht y in yachts){
         yachtsSelected.add(false);

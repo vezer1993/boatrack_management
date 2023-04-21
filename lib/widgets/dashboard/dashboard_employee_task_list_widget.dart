@@ -36,7 +36,7 @@ class _EmployeeTaskListWidgetState extends State<EmployeeTaskListWidget> {
   Future getIssuesForYacht() async {
     if (!dataLoaded) {
       data = await getUnresolvedTasks();
-      yachts = await getYachtList();
+      yachts = await getYachtList(false);
       employees = await getUserList();
       dataLoaded = true;
     }

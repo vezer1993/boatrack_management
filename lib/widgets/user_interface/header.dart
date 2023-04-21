@@ -125,8 +125,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   color: CustomColors().navigationIconColor,
                   iconSize: 24,
                   onPressed: () async {
+                    await updateYachtList();
                     setState(() {
-                      updateYachtList();
                     });
                   },
                 ),

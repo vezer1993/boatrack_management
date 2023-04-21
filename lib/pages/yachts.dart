@@ -27,7 +27,7 @@ class _YachtsPageState extends State<YachtsPage> {
 
   Future getYachtListData() async {
     if (!dataLoaded) {
-      futureData = await getYachtList();
+      futureData = await getYachtList(false);
       dataLoaded = true;
     }
     return futureData;

@@ -31,7 +31,7 @@ class _BookingPresentationWidgetState extends State<BookingPresentationWidget> {
 
   Future getFutureData() async {
     if (!dataLoaded) {
-      futureData = await getYachtList();
+      futureData = await getYachtList(false);
       dataLoaded = true;
     }
     return futureData;
