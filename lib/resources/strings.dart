@@ -105,6 +105,10 @@ class StaticStrings{
     return "/Yachts/list";
   }
 
+  static String getPathYachtListAll(){
+    return "/Yachts/listALL";
+  }
+
   static String getPathYacht(){
     return "/Yachts";
   }
@@ -141,6 +145,10 @@ class StaticStrings{
 
   static String getPathCharterTeltonikaParam(){
     return "teltonikaToken";
+  }
+
+  static String getPathYachtVisibilityToken(){
+    return "visible";
   }
 
   static String getPathBookingNoteParam(){

@@ -55,6 +55,7 @@ class _DashboardCalendarWidgetState extends State<DashboardCalendarWidget> {
   Widget build(BuildContext context) {
     double height = (rowHeight * widget.yachts.length) + headerHeight;
 
+
     return Column(
       children: [
         Row(

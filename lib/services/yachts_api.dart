@@ -50,6 +50,25 @@ Future getYachtList(refresh) async {
   return list;
 }
 
+Future getYachtListALL() async {
+
+  Charter temp = await getCharter();
+  var response = await getResponse(StaticStrings.getPathYachtListAll() + "/" + temp.id.toString()) as http.Response;
+  var jsonString = response.body;
+
+  //DECODE TO JSON
+  var jsonMap = json.decode(jsonString);
+
+  /// PARSE JSON AND ADD TO LIST
+  List<Yacht> list = [];
+  for(var json in jsonMap){
+    Yacht y = Yacht.fromJson(json);
+    list.add(y);
+  }
+
+  return list;
+}
+
 Future getYachtForID(int yachtID) async {
 
   var jsonString = SessionStorage.getValue(StaticStrings.getYachtListSession()).toString();
@@ -100,8 +119,47 @@ Future putYachtTeltonikaID(int yachtID, String teltonikaID, BuildContext context
   }
 }
 
+Future putYachtVisibility(int yachtID, bool visible, BuildContext context) async{
+  String path = StaticStrings.getPathYacht() + "/" + yachtID.toString() + "/visibility";
+  Map<String, String> param = {};
+  param[StaticStrings.getPathYachtVisibilityToken()] = visible.toString();
+  var response = await putResponse(context, path, param) as http.Response;
+  if(response.statusCode.toString().startsWith("2")){
+    updateYachtList();
+    return true;
+  }else{
+    return false;
+  }
+}
+
 Future putYachtCheckModel(int yachtID, int checkModelID, BuildContext context) async{
   String path = StaticStrings.getPathYacht() + "/" + yachtID.toString() + StaticStrings.getPathYachtCheckModel();
+  Map<String, dynamic> param = {};
+  param[StaticStrings.getPathParamYachtCheckModel()] = checkModelID.toString();
+  var response = await putResponse(context, path, param) as http.Response;
+  if(response.statusCode.toString().startsWith("2")){
+    updateYachtList();
+    return true;
+  }else{
+    return false;
+  }
+}
+
+Future putYachtPreCheckModel(int yachtID, int checkModelID, BuildContext context) async{
+  String path = StaticStrings.getPathYacht() + "/" + yachtID.toString() + "/precheckmodel";
+  Map<String, dynamic> param = {};
+  param[StaticStrings.getPathParamYachtCheckModel()] = checkModelID.toString();
+  var response = await putResponse(context, path, param) as http.Response;
+  if(response.statusCode.toString().startsWith("2")){
+    updateYachtList();
+    return true;
+  }else{
+    return false;
+  }
+}
+
+Future putYachtPostCheckModel(int yachtID, int checkModelID, BuildContext context) async{
+  String path = StaticStrings.getPathYacht() + "/" + yachtID.toString() + "/postcheckmodel";
   Map<String, dynamic> param = {};
   param[StaticStrings.getPathParamYachtCheckModel()] = checkModelID.toString();
   var response = await putResponse(context, path, param) as http.Response;
@@ -228,13 +286,14 @@ Future getYachtLocationList(List<Yacht> yachts) async {
 
 Future getYachtRoute(Yacht yacht, DateTime start, DateTime end) async {
 
-  String path = "/devices/501464/locations/history";
+  String path = "/devices/509046/locations/history";
   Map<String, String> param = {};
-  param["start_date"] = "2023-02-20 00:00:00";
-  param["end_date"] = "2023-02-25 00:00:00";
+  param["start_date"] = "2023-04-23 00:00:00";
+  param["end_date"] = "2023-04-27 00:00:00";
 
   Charter c = await  getCharter();
   var response = await getTeltonikaGPSRoute(path, param, c.teltonikaToken.toString()) as http.Response;
+  print(response.body);
   if(response.statusCode.toString().startsWith("2")){
     TeltonikaGPSJSON model = TeltonikaGPSJSON.fromJson(json.decode(response.body));
     List<TeltonikaGPS> data = model.data!;

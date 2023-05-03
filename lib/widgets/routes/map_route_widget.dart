@@ -63,17 +63,7 @@ class _WidgetRouteMapState extends State<WidgetRouteMap> {
             )
         );
       } else {
-        _markers.add(
-          // added markers
-            Marker(
-              markerId: MarkerId(i.toString()),
-              position: widget.gpsLocations[i].latLeng,
-              infoWindow: InfoWindow(
-                title: widget.gpsLocations[i].createdAt,
-              ),
-              icon: BitmapDescriptor.defaultMarker,
-            )
-        );
+        
       }
 
 

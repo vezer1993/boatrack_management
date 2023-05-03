@@ -11,8 +11,9 @@ import '../../services/yachts_api.dart';
 
 class YachtModelSelectWidget extends StatefulWidget {
   final Yacht yacht;
+  final String type;
 
-  const YachtModelSelectWidget({Key? key, required this.yacht})
+  const YachtModelSelectWidget({Key? key, required this.yacht, required this.type})
       : super(key: key);
 
   @override
@@ -35,8 +36,20 @@ class _YachtModelSelectWidgetState extends State<YachtModelSelectWidget> {
       futureData = await getCheckModels();
       if (widget.yacht.checkModelId != null) {
         for (CheckModel cm in futureData) {
-          if (cm.id == widget.yacht.checkModelId) {
-            selectedDropDownValue = cm;
+          if(widget.type == "checkin/out"){
+            if (cm.id == widget.yacht.checkModelId) {
+              selectedDropDownValue = cm;
+            }
+          }
+          if(widget.type == "pre-checkin"){
+            if (cm.id == widget.yacht.preCheckInModelId) {
+              selectedDropDownValue = cm;
+            }
+          }
+          if(widget.type == "post-checkin"){
+            if (cm.id == widget.yacht.postCheckInModelId) {
+              selectedDropDownValue = cm;
+            }
           }
         }
       }
@@ -48,17 +61,27 @@ class _YachtModelSelectWidgetState extends State<YachtModelSelectWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    String title = "CHECK IN/OUT MODEL";
+
+    if(widget.type == "pre-checkin"){
+      title = "PRE-CHECKIN PREP MODEL";
+    }
+    if(widget.type == "post-checkin"){
+      title = "POST-CHECKIN PREP MODEL";
+    }
+
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "CHECK IN/OUT MODEL",
+            title,
             style: CustomTextStyles.textStyleTitle(context),
           ),
           const SizedBox(
-            height: 25,
+            height: 15,
           ),
           FutureBuilder(
             future: getModelsListData(),
@@ -104,7 +127,17 @@ class _YachtModelSelectWidgetState extends State<YachtModelSelectWidget> {
                     const SizedBox(width: 30,),
                     ElevatedButton(
                       onPressed: () {
-                        putYachtCheckModel(widget.yacht.id!, selectedDropDownValue!.id!, context);
+                        setState(() {
+                          if(widget.type == "checkin/out"){
+                            putYachtCheckModel(widget.yacht.id!, selectedDropDownValue!.id!, context);
+                          }
+                          if(widget.type == "pre-checkin"){
+                            putYachtPreCheckModel(widget.yacht.id!, selectedDropDownValue!.id!, context);
+                          }
+                          if(widget.type == "post-checkin"){
+                            putYachtPostCheckModel(widget.yacht.id!, selectedDropDownValue!.id!, context);
+                          }
+                        });
                       },
                       style: CustomButtonStyles
                           .getStandardButtonStyle(),

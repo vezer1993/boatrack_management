@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/account.dart';
 import '../../models/charter.dart';
+import '../../resources/colors.dart';
 import '../../resources/separators.dart';
 import '../../resources/strings.dart';
 import '../../resources/styles/box_decorations.dart';
@@ -11,6 +12,7 @@ import '../../resources/values.dart';
 import '../../services/accounts_api.dart';
 import '../../services/charter_api.dart';
 import '../containers/full_width_container.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class SettingsAccountsWidget extends StatefulWidget {
   const SettingsAccountsWidget({Key? key}) : super(key: key);
@@ -22,6 +24,13 @@ class SettingsAccountsWidget extends StatefulWidget {
 class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
   late Charter charter;
   bool dataLoaded = false;
+
+  String parentGroup = 'ADMIN';
+  var parentGroupItems = [
+    'ADMIN',
+    'SAILOR',
+    'CLEANER',
+  ];
 
   Future getCharterData() async {
     if (!dataLoaded) {
@@ -36,7 +45,7 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
   double columnWidth = StaticValues.halfContainerTableColumnWidth;
   double firstColumnWidth = StaticValues.halfContainerTableFirstColumnWidth;
   double columnHeight = StaticValues.halfContainerTableColumnHeightNoPicture;
-  double itemCount = 7;
+  double itemCount = 8;
 
   bool inputEnabled = false;
 
@@ -115,7 +124,7 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                                                 context))),
                                               )),
                                           SizedBox(
-                                              width: columnWidth * 2,
+                                              width: columnWidth * 1,
                                               child: Padding(
                                                 padding: StaticValues
                                                     .standardTableItemPadding(),
@@ -131,7 +140,18 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                                 padding: StaticValues
                                                     .standardTableItemPadding(),
                                                 child: Center(
-                                                    child: Text("",
+                                                    child: Text("ROLE",
+                                                        style: CustomTextStyles
+                                                            .textStyleTableHeader(
+                                                            context))),
+                                              )),
+                                          SizedBox(
+                                              width: columnWidth,
+                                              child: Padding(
+                                                padding: StaticValues
+                                                    .standardTableItemPadding(),
+                                                child: Center(
+                                                    child: Text("isADMIN",
                                                         style: CustomTextStyles
                                                             .textStyleTableHeader(
                                                                 context))),
@@ -198,7 +218,7 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                         ),
                                       ),
                                       SizedBox(
-                                        width: columnWidth * 2,
+                                        width: columnWidth,
                                         child: Center(
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
@@ -212,10 +232,28 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                           ),
                                         ),
                                       ),
-                                      Visibility(
-                                        visible:
-                                            !charter.accounts![index].isAdmin!,
-                                        child: Text("da"),
+                                      SizedBox(
+                                        width: columnWidth * 2,
+                                        child: Center(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                                charter.accounts![index].role
+                                                    .toString(),
+                                                style: CustomTextStyles
+                                                    .textStyleTableColumn(
+                                                    context),
+                                                maxLines: 1),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: columnWidth,
+                                        child: Visibility(
+                                          visible:
+                                              charter.accounts![index].isAdmin!,
+                                          child: const Center(child: Text("yes")),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -297,7 +335,7 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                 ),
                               ),
                               SizedBox(
-                                width: columnWidth * 2,
+                                width: columnWidth ,
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -312,6 +350,44 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
                                               .getStandardInputDecoration(
                                                   context, inputEnabled)
                                           .copyWith(hintText: "PIN"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: columnWidth * 2,
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Center(
+                                    child: DropdownButton2(
+                                      hint: Text(
+                                        'Select Group',
+                                        style: CustomTextStyles.textStyleTableColumn(context),
+                                      ),
+                                      dropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: CustomColors().websiteBackgroundColor,
+                                      ),
+                                      items: parentGroupItems
+                                          .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item.toString(),
+                                          style: CustomTextStyles.textStyleTableColumn(
+                                              context),
+                                        ),
+                                      ))
+                                          .toList(),
+                                      value: parentGroup,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          parentGroup = value.toString();
+                                        });
+                                      },
+                                      buttonHeight: 50,
+                                      buttonWidth: 300,
+                                      itemHeight: 40,
                                     ),
                                   ),
                                 ),
@@ -378,6 +454,7 @@ class _SettingsAccountsWidgetState extends State<SettingsAccountsWidget> {
     acc.isAdmin = false;
     acc.pin = pinTextEditingController.text;
     acc.cleanings = [];
+    acc.role = parentGroup;
 
     bool response = await postNewAccount(acc, context);
     if(response){

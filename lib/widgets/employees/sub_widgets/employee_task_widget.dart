@@ -44,9 +44,11 @@ class _EmployeeTaskWidgetState extends State<EmployeeTaskWidget> {
     NotificationEnum.cleaning,
     NotificationEnum.checkin,
     NotificationEnum.checkout,
-    NotificationEnum.preparation
+    NotificationEnum.preCheckin,
+    NotificationEnum.postCheckout,
+    NotificationEnum.service,
   ];
-  List<bool> selectedTypes = [false, false, false, false];
+  List<bool> selectedTypes = [false, false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {

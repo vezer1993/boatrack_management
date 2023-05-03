@@ -4,7 +4,8 @@ class NotificationEnum {
   static String checkin = "checkin";
   static String checkout = "checkout";
   static String issue = "issue";
-  static String preparation = "preparation";
+  static String preCheckin = "pre check-in prep";
+  static String postCheckout = "post check-out prep";
   static String service = "service";
 
 
