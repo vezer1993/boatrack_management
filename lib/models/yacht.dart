@@ -19,12 +19,15 @@ class Yacht {
   String? availability;
   String? availabilityNextYear;
   int? checkModelId;
+  int? preCheckInModelId;
+  int? postCheckInModelId;
   bool? isBeingCleaned;
   String? teltonikaId;
   Charter? charter;
   CheckModel? checkModel;
   List<Booking>? bookings;
   List<Cleaning>? cleanings;
+  bool? visible;
 
   Yacht(
       {this.id,
@@ -56,6 +59,9 @@ class Yacht {
     isBeingCleaned = json['isBeingCleaned'];
     teltonikaId = json['teltonikaId'];
     checkModelId = json['checkModelId'];
+    preCheckInModelId = json['precheckinPrepModelId'];
+    postCheckInModelId = json['postcheckinPrepModelId'];
+    visible = json['visible'];
     if (json['bookings'] != null) {
       bookings = <Booking>[];
       json['bookings'].forEach((v) {
@@ -87,6 +93,7 @@ class Yacht {
     data['teltonikaId'] = this.teltonikaId;
     data['charter'] = this.charter;
     data['checkModel'] = this.checkModel;
+    data['visible'] = this.visible;
     if (this.bookings != null) {
       data['bookings'] = this.bookings!.map((v) => v.toJson()).toList();
     }

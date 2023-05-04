@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../models/yacht.dart';
 import '../../resources/colors.dart';
+import '../dialogs/dialog_prep_showcase.dart';
 
 class BookingPreparationWidget extends StatefulWidget {
   final String bookingID;
@@ -62,7 +63,12 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
               size: 15,
               color: CustomColors().failBoxCheckMarkColor,
             );
-            Widget prep = FaIcon(
+            Widget prepPreCheckout = FaIcon(
+              FontAwesomeIcons.x,
+              size: 15,
+              color: CustomColors().failBoxCheckMarkColor,
+            );
+            Widget prepPostCheckout = FaIcon(
               FontAwesomeIcons.x,
               size: 15,
               color: CustomColors().failBoxCheckMarkColor,
@@ -93,6 +99,32 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   context)?.copyWith(decoration: TextDecoration.underline, color: CustomColors().primaryColor),));
             }
 
+            if(futureData.preCheckinPrep != null){
+              prepPreCheckout = InkWell(onTap: (){
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return(DialogPrepShowcase(prep: futureData.preCheckinPrep!, yacht: widget.yacht,));
+                  },
+                );
+              },child: Text(Conversion.convertISOTimeToStandardFormat(futureData.preCheckinPrep!.timestampData.toString()), style: CustomTextStyles
+                  .textStyleTableColumn(
+                  context)?.copyWith(decoration: TextDecoration.underline, color: CustomColors().primaryColor),));
+            }
+
+            if(futureData.postCheckoutPrep != null){
+              prepPostCheckout = InkWell(onTap: (){
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return(DialogPrepShowcase(prep: futureData.postCheckoutPrep!, yacht: widget.yacht,));
+                  },
+                );
+              },child: Text(Conversion.convertISOTimeToStandardFormat(futureData.postCheckoutPrep!.timestampData.toString()), style: CustomTextStyles
+                  .textStyleTableColumn(
+                  context)?.copyWith(decoration: TextDecoration.underline, color: CustomColors().primaryColor),));
+            }
+
             if(futureData.guestsArrived != null){
               if(futureData.guestsArrived!){
                 guestsArrived = FaIcon(
@@ -111,7 +143,7 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   Row(
                     children: [
                       Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK OUT:     ", style: CustomTextStyles.textStyleTableColumn(context),), checkOut],)),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING:     ", style: CustomTextStyles.textStyleTableColumn(context),), cleaning],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-OUT PREP:     ", style: CustomTextStyles.textStyleTableColumn(context),), prepPostCheckout],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
@@ -119,15 +151,18 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 7,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("PREP:     ", style: CustomTextStyles.textStyleTableColumn(context),), prep],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING:     ", style: CustomTextStyles.textStyleTableColumn(context),), cleaning],)),),
                       Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("GUESTS ARRIVED:     ", style: CustomTextStyles.textStyleTableColumn(context),), guestsArrived],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
                   Container(width: double.infinity, height: 1, color: CustomColors().borderColor,),
                   const SizedBox(height: 7,),
-                  Center(
-                      child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK IN:     ", style: CustomTextStyles.textStyleTableColumn(context),), checkIn],),
+                  Row(
+                    children: [
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-IN PREP:     ", style: CustomTextStyles.textStyleTableColumn(context),), prepPreCheckout],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK IN:     ", style: CustomTextStyles.textStyleTableColumn(context),), checkIn],)),),
+                    ],
                   )
                 ],
               ),

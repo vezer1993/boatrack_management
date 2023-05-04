@@ -37,6 +37,7 @@ class _DashboardCalendarFieldWidgetState
 
   @override
   Widget build(BuildContext context) {
+
     String availability = widget.yacht.availability!;
 
     if(!widget.thisYear){
@@ -46,6 +47,8 @@ class _DashboardCalendarFieldWidgetState
     double dayWidth = widget.width / 7;
     Color dayColor = CustomColors().calendarBookedColor;
     bool booked = false;
+
+
 
     ///CHECK IF WEEK IS BOOKED
     for (int i = 0; i < 7; i++) {
@@ -66,7 +69,6 @@ class _DashboardCalendarFieldWidgetState
             createContainer(CustomColors().calendarOptionColor, dayWidth, i));
       }
     }
-
     ///VARIABLES FOR TOOLITP
     String dateFrom = "";
     String dateTo = "";
@@ -76,8 +78,21 @@ class _DashboardCalendarFieldWidgetState
     if(booked == true){
       for(int x = 0; x < widget.yacht.bookings!.length; x++){
         DateFormat df = Formats.bookingManagerDateTimeFormat();
-        DateTime dtStart = df.parse(widget.yacht.bookings![x].datefrom.toString());
-        DateTime dtFinish = df.parse(widget.yacht.bookings![x].dateto.toString());
+
+        DateTime dtStart = DateTime.now();
+        if(widget.yacht.bookings![x].datefrom != null){
+          dtStart = df.parse(widget.yacht.bookings![x].datefrom.toString());
+        }else{
+          print("HELLO I AM NULL");
+        }
+
+        DateTime dtFinish = DateTime.now();
+
+        if(widget.yacht.bookings![x].dateto != null){
+          dtFinish = df.parse(widget.yacht.bookings![x].dateto.toString());
+        }else{
+          print("HELLO I AM NULL");
+        }
 
         int week = CalendarCalculations().getWeekNumberForDate(dtStart);
         int finishWeek = CalendarCalculations().getWeekNumberForDate(dtFinish);

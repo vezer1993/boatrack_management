@@ -8,6 +8,7 @@ import '../../models/yacht.dart';
 import '../../resources/styles/box_decorations.dart';
 import '../../resources/values.dart';
 import '../settings/settings_accounts.dart';
+import '../settings/settings_visibility.dart';
 
 class SettingsMenuHeaderWidget extends StatefulWidget {
 
@@ -35,6 +36,7 @@ class _SettingsMenuHeaderWidgetState extends State<SettingsMenuHeaderWidget> {
 
     // add background for each item
     if(menuItemBackgrounds.isEmpty){
+      menuItemBackgrounds.add(Colors.transparent);
       menuItemBackgrounds.add(Colors.transparent);
       menuItemBackgrounds.add(Colors.transparent);
       menuItemBackgrounds.add(Colors.transparent);
@@ -101,6 +103,24 @@ class _SettingsMenuHeaderWidgetState extends State<SettingsMenuHeaderWidget> {
                   child: Padding(
                     padding: StaticValues.standardTableItemPadding(),
                     child: Text("CHECK IN/OUT MODEL", style: CustomTextStyles.getUIMenuTextStyle(context),),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  menuItemBackgrounds[selectedItem] = Colors.transparent;
+                  selectedItem = 3;
+                  menuItemBackgrounds[selectedItem] = CustomColors().selectedItemColor;
+                  widget.notifyParent(const SettingsYachtVisibilityWidget());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                    color: menuItemBackgrounds[3],
+                  ),
+                  child: Padding(
+                    padding: StaticValues.standardTableItemPadding(),
+                    child: Text("YACHT VISIBILITY", style: CustomTextStyles.getUIMenuTextStyle(context),),
                   ),
                 ),
               ),

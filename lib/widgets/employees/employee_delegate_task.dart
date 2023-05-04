@@ -31,7 +31,7 @@ class _EmployeeDelegateTaskWidgetState
   List<Accounts> filteredAccounts = [];
   bool filterAccs = true;
 
-  List<Color> taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
+  List<Color> taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
   List<bool> selectedTasks = [false, false, false, false, false];
   TextEditingController taskNote = TextEditingController();
   List<Accounts> selectedAcc = [];
@@ -44,7 +44,8 @@ class _EmployeeDelegateTaskWidgetState
     NotificationEnum.cleaning,
     NotificationEnum.checkin,
     NotificationEnum.checkout,
-    NotificationEnum.preparation,
+    NotificationEnum.preCheckin,
+    NotificationEnum.postCheckout,
     NotificationEnum.service
   ];
 
@@ -75,495 +76,531 @@ class _EmployeeDelegateTaskWidgetState
               filterAccounts();
             }
 
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: CustomBoxDecorations.standardBoxDecoration(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text("SELECT EMPLOYEES", style: CustomTextStyles.textStyleTitle(context),),
-                        const SizedBox(height: 20,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  filterItemBackground[selectedFilter] = Colors.transparent;
-                                  selectedFilter = 0;
-                                  filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
-                                  filterAccs = true;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                  color: filterItemBackground[0],
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("ALL", style: CustomTextStyles.textStyleTableHeader(context),),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  filterItemBackground[selectedFilter] = Colors.transparent;
-                                  selectedFilter = 1;
-                                  filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
-                                  filterAccs = true;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                  color: filterItemBackground[1],
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("CLEANERS", style: CustomTextStyles.textStyleTableHeader(context),),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  filterItemBackground[selectedFilter] = Colors.transparent;
-                                  selectedFilter = 2;
-                                  filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
-                                  filterAccs = true;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                  color: filterItemBackground[2],
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("SAILORS", style: CustomTextStyles.textStyleTableHeader(context),),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  filterItemBackground[selectedFilter] = Colors.transparent;
-                                  selectedFilter = 3;
-                                  filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
-                                  filterAccs = true;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                  color: filterItemBackground[3],
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("ADMINS", style: CustomTextStyles.textStyleTableHeader(context),),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10,),
-                        SizedBox(
-                          height: 600,
-                          width: 500,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: filteredAccounts.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedAccounts[index] = !selectedAccounts[index];
-                                    if(selectedAccounts[index]){
-                                      selectedAcc.add(filteredAccounts[index]);
-                                    }else{
-                                      for(Accounts acc in selectedAcc){
-                                        if(acc.id == filteredAccounts[index].id){
-                                          selectedAcc.remove(acc);
-                                        }
-                                      }
-                                    }
-
-                                  });
-                                },
-                                child: Container(
-                                  width: 100,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: selectedAccounts[index]
-                                          ? CustomColors().selectedItemColor
-                                          : CustomColors().altBackgroundColor,
-                                      border: Border.all(color: CustomColors().borderColor, width: 1)),
-                                  child: Center(
-                                      child: Text(
-                                        filteredAccounts[index].name.toString(),
-                                        style: CustomTextStyles.textStyleTableColumn(
-                                            context)
-                                            ?.copyWith(
-                                            color: selectedAccounts[index]
-                                                ? CustomColors().primaryColor
-                                                : CustomColors()
-                                                .navigationTextColor),
-                                      )),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20,),
-                Visibility(visible: selectedAcc.isNotEmpty ,child: Container(
-                  decoration: CustomBoxDecorations.standardBoxDecoration(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text("SELECT YACHTS", style: CustomTextStyles.textStyleTitle(context),),
-                        const SizedBox(height: 10,),
-                        SizedBox(
-                          height: 600,
-                          width: 500,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: yachts.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedYachtsBool[index] = !selectedYachtsBool[index];
-                                    if(selectedYachtsBool[index]){
-                                      selectedYachts.add(yachts[index]);
-                                    }else{
-                                      for(Yacht y in selectedYachts){
-                                        if(y.id == yachts[index].id){
-                                          selectedYachts.remove(y);
-                                        }
-                                      }
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  width: 100,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: selectedYachtsBool[index]
-                                          ? CustomColors().selectedItemColor
-                                          : CustomColors().altBackgroundColor,
-                                      border: Border.all(color: CustomColors().borderColor, width: 1)),
-                                  child: Center(
-                                      child: Text(
-                                        yachts[index].name.toString(),
-                                        style: CustomTextStyles.textStyleTableColumn(
-                                            context)
-                                            ?.copyWith(
-                                            color: selectedYachtsBool[index]
-                                                ? CustomColors().primaryColor
-                                                : CustomColors()
-                                                .navigationTextColor),
-                                      )),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
-                ),),
-                const SizedBox(width: 20,),
-                Visibility(
-                  visible: selectedYachts.isNotEmpty,
-                  child: Container(
-                    width: 500,
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
                     decoration: CustomBoxDecorations.standardBoxDecoration(),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
-                            child: Text("SELECT TASK TYPE/TYPES",style: CustomTextStyles.textStyleTitle(context)),
-                          ),
+                          Text("SELECT EMPLOYEES", style: CustomTextStyles.textStyleTitle(context),),
                           const SizedBox(height: 20,),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    int temp = 0;
-                                    if(selectedTasks[temp]){
-                                      taskBackground[temp] = Colors.transparent;
-                                      selectedTasks[temp] = false;
-                                    }else{
-                                      taskBackground[temp] = CustomColors().selectedItemColor;
-                                      selectedTasks[temp] = true;
-                                    }
+                                    filterItemBackground[selectedFilter] = Colors.transparent;
+                                    selectedFilter = 0;
+                                    filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
+                                    filterAccs = true;
                                   });
                                 },
                                 child: Container(
-                                  width: 120,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: CustomColors().unSelectedItemColor),
-                                    color: taskBackground[0],
+                                    color: filterItemBackground[0],
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.cleaning_services, size: 19, color: CustomColors().navigationIconColor,),
-                                        const SizedBox(height: 7,),
-                                        Text("CLEANING", style: CustomTextStyles.textStyleTableHeader(context),)
-                                      ],
-                                    ),
+                                    child: Text("ALL", style: CustomTextStyles.textStyleTableHeader(context),),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 15,),
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    int temp = 1;
-                                    if(selectedTasks[temp]){
-                                      taskBackground[temp] = Colors.transparent;
-                                      selectedTasks[temp] = false;
-                                    }else{
-                                      taskBackground[temp] = CustomColors().selectedItemColor;
-                                      selectedTasks[temp] = true;
-                                    }
+                                    filterItemBackground[selectedFilter] = Colors.transparent;
+                                    selectedFilter = 1;
+                                    filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
+                                    filterAccs = true;
                                   });
                                 },
                                 child: Container(
-                                  width: 120,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: CustomColors().unSelectedItemColor),
-                                    color: taskBackground[1],
+                                    color: filterItemBackground[1],
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.double_arrow_outlined, size: 19, color: CustomColors().navigationIconColor,),
-                                        const SizedBox(height: 7,),
-                                        Text("CHECK IN", style: CustomTextStyles.textStyleTableHeader(context),)
-                                      ],
-                                    ),
+                                    child: Text("CLEANERS", style: CustomTextStyles.textStyleTableHeader(context),),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 15,),
                               InkWell(
                                 onTap: () {
                                   setState(() {
-                                    int temp = 2;
-                                    if(selectedTasks[temp]){
-                                      taskBackground[temp] = Colors.transparent;
-                                      selectedTasks[temp] = false;
-                                    }else{
-                                      taskBackground[temp] = CustomColors().selectedItemColor;
-                                      selectedTasks[temp] = true;
-                                    }
+                                    filterItemBackground[selectedFilter] = Colors.transparent;
+                                    selectedFilter = 2;
+                                    filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
+                                    filterAccs = true;
                                   });
                                 },
                                 child: Container(
-                                  width: 120,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: CustomColors().unSelectedItemColor),
-                                    color: taskBackground[2],
+                                    color: filterItemBackground[2],
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.subdirectory_arrow_left_outlined, size: 19, color: CustomColors().navigationIconColor,),
-                                        const SizedBox(height: 7,),
-                                        Text("CHECK OUT", style: CustomTextStyles.textStyleTableHeader(context),)
-                                      ],
-                                    ),
+                                    child: Text("SAILORS", style: CustomTextStyles.textStyleTableHeader(context),),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    filterItemBackground[selectedFilter] = Colors.transparent;
+                                    selectedFilter = 3;
+                                    filterItemBackground[selectedFilter] = CustomColors().selectedItemColor;
+                                    filterAccs = true;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                    color: filterItemBackground[3],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text("ADMINS", style: CustomTextStyles.textStyleTableHeader(context),),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    int temp = 3;
-                                    if(selectedTasks[temp]){
-                                      taskBackground[temp] = Colors.transparent;
-                                      selectedTasks[temp] = false;
-                                    }else{
-                                      taskBackground[temp] = CustomColors().selectedItemColor;
-                                      selectedTasks[temp] = true;
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: CustomColors().unSelectedItemColor),
-                                    color: taskBackground[3],
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.fact_check_outlined, size: 19, color: CustomColors().navigationIconColor,),
-                                        const SizedBox(height: 7,),
-                                        Text("PREPARATION", style: CustomTextStyles.textStyleTableHeader(context),)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 15,),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    int temp = 4;
-                                    if(selectedTasks[temp]){
-                                      taskBackground[temp] = Colors.transparent;
-                                      selectedTasks[temp] = false;
-                                    }else{
-                                      taskBackground[temp] = CustomColors().selectedItemColor;
-                                      selectedTasks[temp] = true;
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: CustomColors().unSelectedItemColor),
-                                    color: taskBackground[4],
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Icon(Icons.home_repair_service, size: 19, color: CustomColors().navigationIconColor,),
-                                        const SizedBox(height: 7,),
-                                        Text("SERVICE", style: CustomTextStyles.textStyleTableHeader(context),)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20,),
-                          Visibility(visible:taskTypeSelected() ,child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 20,),
-                              Text("TASK NOTE", style: CustomTextStyles.textStyleTitle(context)),
-                              const SizedBox(height: 5,),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      30, 0, 30, 0),
-                                  child: Center(
-                                    child: TextField(
-                                      controller:
-                                      taskNote,
-                                      style: CustomTextStyles
-                                          .textStyleTableColumnNoBold(
-                                          context),
-                                      minLines: 3,
-                                      maxLines: 5,
-                                      decoration: CustomBoxDecorations
-                                          .getStandardInputDecoration(
-                                          context, true)
-                                          .copyWith(
-                                          hintText:
-                                          "TASK NOTE"),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20,),
-                              Center(
-                                child: SizedBox(
-                                  width: 250,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    style: CustomButtonStyles.getStandardButtonStyle(),
-                                    onPressed: !sendingData ? () async {
-
-                                      setState(() {
-                                        sendingData = true;
-                                      });
-                                      for(int i = 0; i < selectedTasks.length; i++){
-                                        if(selectedTasks[i]){
-                                          for(Accounts acc in selectedAcc){
-                                            for(Yacht yacht in selectedYachts){
-                                              EmployeeTask t = EmployeeTask();
-                                              t.taskName = NotificationEnum.getTaskMessage(taskTypes[i], yacht.name.toString());
-                                              t.typeId = yacht.id;
-                                              t.accountId = acc.id;
-                                              Charter ch = await getCharter();
-                                              t.charterId = ch.id;
-                                              t.taskType = taskTypes[i];
-                                              t.note = taskNote.text;
-
-                                              await postNewTask(t, context);
-                                            }
+                          const SizedBox(height: 10,),
+                          SizedBox(
+                            height: 600,
+                            width: 500,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: filteredAccounts.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedAccounts[index] = !selectedAccounts[index];
+                                      if(selectedAccounts[index]){
+                                        selectedAcc.add(filteredAccounts[index]);
+                                      }else{
+                                        for(Accounts acc in selectedAcc){
+                                          if(acc.id == filteredAccounts[index].id){
+                                            selectedAcc.remove(acc);
                                           }
                                         }
                                       }
 
-                                      setState(() {
-                                        resetDataFilter();
-                                      });
-                                    } : null,
-                                    child: Text(
-                                      "DELEGATE TASKS",
-                                      style: CustomTextStyles
-                                          .getButtonTextStyle(context),
-                                    ),
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 100,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: selectedAccounts[index]
+                                            ? CustomColors().selectedItemColor
+                                            : CustomColors().altBackgroundColor,
+                                        border: Border.all(color: CustomColors().borderColor, width: 1)),
+                                    child: Center(
+                                        child: Text(
+                                          filteredAccounts[index].name.toString(),
+                                          style: CustomTextStyles.textStyleTableColumn(
+                                              context)
+                                              ?.copyWith(
+                                              color: selectedAccounts[index]
+                                                  ? CustomColors().primaryColor
+                                                  : CustomColors()
+                                                  .navigationTextColor),
+                                        )),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 20,),
-                            ],
-                          )),
+                                );
+                              },
+                            ),
+                          )
 
                         ],
                       ),
                     ),
                   ),
-                )
-              ],
+                  const SizedBox(width: 20,),
+                  Visibility(visible: selectedAcc.isNotEmpty ,child: Container(
+                    decoration: CustomBoxDecorations.standardBoxDecoration(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text("SELECT YACHTS", style: CustomTextStyles.textStyleTitle(context),),
+                          const SizedBox(height: 10,),
+                          SizedBox(
+                            height: 600,
+                            width: 500,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: yachts.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedYachtsBool[index] = !selectedYachtsBool[index];
+                                      if(selectedYachtsBool[index]){
+                                        selectedYachts.add(yachts[index]);
+                                      }else{
+                                        for(Yacht y in selectedYachts){
+                                          if(y.id == yachts[index].id){
+                                            selectedYachts.remove(y);
+                                          }
+                                        }
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 100,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: selectedYachtsBool[index]
+                                            ? CustomColors().selectedItemColor
+                                            : CustomColors().altBackgroundColor,
+                                        border: Border.all(color: CustomColors().borderColor, width: 1)),
+                                    child: Center(
+                                        child: Text(
+                                          yachts[index].name.toString(),
+                                          style: CustomTextStyles.textStyleTableColumn(
+                                              context)
+                                              ?.copyWith(
+                                              color: selectedYachtsBool[index]
+                                                  ? CustomColors().primaryColor
+                                                  : CustomColors()
+                                                  .navigationTextColor),
+                                        )),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+
+                        ],
+                      ),
+                    ),
+                  ),),
+                  const SizedBox(width: 20,),
+                  Visibility(
+                    visible: selectedYachts.isNotEmpty,
+                    child: Container(
+                      width: 500,
+                      decoration: CustomBoxDecorations.standardBoxDecoration(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text("SELECT TASK TYPE/TYPES",style: CustomTextStyles.textStyleTitle(context)),
+                            ),
+                            const SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 0;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[0],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.cleaning_services, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("CLEANING", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15,),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 1;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[1],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.double_arrow_outlined, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("CHECK IN", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15,),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 2;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[2],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.subdirectory_arrow_left_outlined, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("CHECK OUT", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 3;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[3],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.fact_check_outlined, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("PRE CHECK-IN PREP", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15,),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 4;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[4],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.fact_check_outlined, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("POST CHECK-OUT PREP", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15,),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      int temp = 5;
+                                      if(selectedTasks[temp]){
+                                        taskBackground[temp] = Colors.transparent;
+                                        selectedTasks[temp] = false;
+                                      }else{
+                                        taskBackground[temp] = CustomColors().selectedItemColor;
+                                        selectedTasks[temp] = true;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                      border: Border.all(color: CustomColors().unSelectedItemColor),
+                                      color: taskBackground[5],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.home_repair_service, size: 19, color: CustomColors().navigationIconColor,),
+                                          const SizedBox(height: 7,),
+                                          Text("SERVICE", style: CustomTextStyles.textStyleTableHeader(context),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20,),
+                            Visibility(visible:taskTypeSelected() ,child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 20,),
+                                Text("TASK NOTE", style: CustomTextStyles.textStyleTitle(context)),
+                                const SizedBox(height: 5,),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        30, 0, 30, 0),
+                                    child: Center(
+                                      child: TextField(
+                                        controller:
+                                        taskNote,
+                                        style: CustomTextStyles
+                                            .textStyleTableColumnNoBold(
+                                            context),
+                                        minLines: 3,
+                                        maxLines: 5,
+                                        decoration: CustomBoxDecorations
+                                            .getStandardInputDecoration(
+                                            context, true)
+                                            .copyWith(
+                                            hintText:
+                                            "TASK NOTE"),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20,),
+                                Center(
+                                  child: SizedBox(
+                                    width: 250,
+                                    height: 40,
+                                    child: ElevatedButton(
+                                      style: CustomButtonStyles.getStandardButtonStyle(),
+                                      onPressed: !sendingData ? () async {
+
+                                        setState(() {
+                                          sendingData = true;
+                                        });
+                                        for(int i = 0; i < selectedTasks.length; i++){
+                                          if(selectedTasks[i]){
+                                            for(Accounts acc in selectedAcc){
+                                              for(Yacht yacht in selectedYachts){
+                                                EmployeeTask t = EmployeeTask();
+                                                t.taskName = NotificationEnum.getTaskMessage(taskTypes[i], yacht.name.toString());
+                                                t.typeId = yacht.id;
+                                                t.accountId = acc.id;
+                                                Charter ch = await getCharter();
+                                                t.charterId = ch.id;
+                                                t.taskType = taskTypes[i];
+                                                t.note = taskNote.text;
+
+                                                await postNewTask(t, context);
+                                              }
+                                            }
+                                          }
+                                        }
+
+                                        setState(() {
+                                          resetDataFilter();
+                                        });
+                                      } : null,
+                                      child: Text(
+                                        "DELEGATE TASKS",
+                                        style: CustomTextStyles
+                                            .getButtonTextStyle(context),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20,),
+                              ],
+                            )),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             );
           }
         });
@@ -608,8 +645,8 @@ class _EmployeeDelegateTaskWidgetState
     filteredAccounts = [];
     selectedAccounts = [];
     selectedAcc = [];
-    taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
-    selectedTasks = [false, false, false, false, false];
+    taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
+    selectedTasks = [false, false, false, false, false, false];
     taskNote = TextEditingController();
 
     selectedYachtsBool = [];
@@ -623,8 +660,8 @@ class _EmployeeDelegateTaskWidgetState
     filteredAccounts = [];
     selectedAccounts = [];
     selectedAcc = [];
-    taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
-    selectedTasks = [false, false, false, false, false];
+    taskBackground = [Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent, Colors.transparent];
+    selectedTasks = [false, false, false, false, false, false];
     taskNote = TextEditingController();
     filterAccs = true;
     sendingData = false;

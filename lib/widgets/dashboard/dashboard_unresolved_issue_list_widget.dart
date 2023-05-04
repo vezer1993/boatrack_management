@@ -36,7 +36,7 @@ class _DashboardUnresolvedIssueListState extends State<DashboardUnresolvedIssueL
   Future getIssuesForYacht() async {
     if (!dataLoaded) {
       data = await getUnresolvedIssues();
-      yachts = await getYachtList(false);
+      yachts = await getYachtListALL();
       employees = await getUserList();
       dataLoaded = true;
     }

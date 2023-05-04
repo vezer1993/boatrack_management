@@ -1,3 +1,4 @@
+import 'package:boatrack_management/resources/colors.dart';
 import 'package:boatrack_management/widgets/containers/double_widget_container.dart';
 import 'package:boatrack_management/widgets/containers/multi_widget_container.dart';
 import 'package:boatrack_management/widgets/yachts/sub_widgets/yacht_engine_temperature.dart';
@@ -38,7 +39,7 @@ class _YachtPageState extends State<YachtPage> {
               childWidget: YachtPresentationWidget(yacht: widget.yacht),
             ),
             Separators.dashboardVerticalSeparator(),
-            MultiWidgetContainer(topLeftWidget: const YachtDataUsedWidget(), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 600), rightWidget: YachtModelSelectWidget(yacht: widget.yacht), topRightWidget: YachtEngineTemperature(), containerHeight: 600,)
+            MultiWidgetContainer(topLeftWidget: const YachtDataUsedWidget(), mainWidget: YachtInformationWidget(yacht: widget.yacht, containerHeight: 600), rightWidget: Column(mainAxisAlignment: MainAxisAlignment.center, children: [YachtModelSelectWidget(yacht: widget.yacht, type: 'checkin/out',), const SizedBox(height: 5,), Container(width: double.infinity, height: 2, color: CustomColors().unSelectedItemColor,), const SizedBox(height: 5,),  YachtModelSelectWidget(yacht: widget.yacht, type: "pre-checkin",), const SizedBox(height: 5,), Container(width: double.infinity, height: 2, color: CustomColors().unSelectedItemColor,), const SizedBox(height: 5,),  YachtModelSelectWidget(yacht: widget.yacht, type: "post-checkin",)],), topRightWidget: YachtEngineTemperature(), containerHeight: 600,)
           ],
         ),
       ),
