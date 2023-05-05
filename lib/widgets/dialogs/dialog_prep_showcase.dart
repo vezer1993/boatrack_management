@@ -47,10 +47,6 @@ class _DialogPrepShowcaseState extends State<DialogPrepShowcase> {
 
     List<PrePostSegment> segments = widget.prep.getSegments();
 
-    for (PrePostSegment seg in segments) {
-      print(seg.rating);
-    }
-
     return Dialog(
         child: FutureBuilder(
             future: getIssueData(),

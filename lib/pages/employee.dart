@@ -1,3 +1,4 @@
+import 'package:boatrack_management/widgets/employees/employee_board.dart';
 import 'package:boatrack_management/widgets/employees/employee_header_menu.dart';
 import 'package:boatrack_management/widgets/employees/employee_list.dart';
 import 'package:boatrack_management/widgets/employees/employee_presentation.dart';
@@ -17,7 +18,7 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
 
-  Widget currentEmployeeWidget = Center();
+  Widget currentEmployeeWidget = EmployeeBoardWidget();
 
   @override
   Widget build(BuildContext context) {

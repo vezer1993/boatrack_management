@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:boatrack_management/models/board_task.dart';
 import 'package:boatrack_management/models/employeeTask.dart';
 import 'package:boatrack_management/services/charter_api.dart';
 import 'package:boatrack_management/services/web_services.dart';
@@ -31,6 +32,18 @@ Future postNewTask(EmployeeTask task, BuildContext context) async {
   }
 }
 
+Future postNewBoardTask(BoardTask task, BuildContext context) async {
+  print(task.toJson());
+  var response = await postResponse("/BoardTasks", task.toJson(), context) as http.Response;
+  print(response.body);
+
+  if(response.statusCode.toString().startsWith("2")){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 Future getUnresolvedTasks() async {
   Charter temp = await getCharter();
   var response = await getResponse("/Task/list/" + temp.id.toString()) as http.Response;
@@ -43,6 +56,25 @@ Future getUnresolvedTasks() async {
   List<EmployeeTask> list = [];
   for(var json in jsonMap){
     EmployeeTask e = EmployeeTask.fromJson(json);
+    list.add(e);
+  }
+
+  return list;
+}
+
+Future getUnresolvedBoardTasks(int id) async {
+  var response = await getResponse("/BoardTasks/accounttasks/" + id.toString()) as http.Response;
+  var jsonString = response.body;
+
+  print(response.body);
+  //DECODE TO JSON
+  var jsonMap = json.decode(jsonString);
+
+
+  /// PARSE JSON AND ADD TO LIST
+  List<BoardTask> list = [];
+  for(var json in jsonMap){
+    BoardTask e = BoardTask.fromJson(json);
     list.add(e);
   }
 

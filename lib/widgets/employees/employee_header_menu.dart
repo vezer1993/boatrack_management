@@ -4,6 +4,7 @@ import '../../resources/colors.dart';
 import '../../resources/styles/box_decorations.dart';
 import '../../resources/styles/text_styles.dart';
 import '../../resources/values.dart';
+import 'employee_board.dart';
 import 'employee_delegate_task.dart';
 
 class EmployeeHeader extends StatefulWidget {
@@ -38,7 +39,7 @@ class _EmployeeHeaderState extends State<EmployeeHeader> {
                     selectedItem = 0;
                     menuItemBackgrounds[selectedItem] = CustomColors().selectedItemColor;
                   });
-                  widget.notifyParent(Text("HI 1"));
+                  widget.notifyParent(EmployeeBoardWidget());
                 },
                 child: Container(
                   decoration: BoxDecoration(
